@@ -1,0 +1,24 @@
+{
+    "name": "cvweiss/project.supply",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Clinton V. Weiss",
+            "email": "cvweiss@gmail.com"
+        }
+    ],
+    "prefer-stable": true,
+    "require": {
+        "slim/slim": "^3.1",
+        "talesoft/tale-jade": "^1.4"
+    },
+    "autoload": {
+        "files": ["src/config.php", "src/jade.php", "src/slim.php"],
+        "psr-4": {
+            "Project\\Supply\\": "src/classes/"
+        }
+    },
+    "scripts": {
+        "pre-update-cmd": "mkdir -p cache/jade 2>/dev/null"
+    }
+}
