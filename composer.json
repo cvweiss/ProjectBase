@@ -10,7 +10,8 @@
     "prefer-stable": true,
     "require": {
         "slim/slim": "^3.1",
-        "talesoft/tale-jade": "^1.4"
+        "talesoft/tale-jade": "^1.4",
+        "bshaffer/oauth2-server-php": "~1.8"
     },
     "autoload": {
         "files": ["src/config.php", "src/jade.php", "src/slim.php"],
@@ -19,6 +20,6 @@
         }
     },
     "scripts": {
-        "pre-update-cmd": "mkdir -p cache/jade 2>/dev/null"
+        "pre-update-cmd": "mkdir -p cache 2>/dev/null"
     }
 }
