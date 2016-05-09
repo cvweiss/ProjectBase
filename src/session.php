@@ -20,5 +20,6 @@ if ($user_id !== null)
     {
         Config::set("user_email", $user->get("email"));
         Config::set("user_name", $user->get("name"));
+        Config::set("user_image", $user->get("image"));
     }
 }

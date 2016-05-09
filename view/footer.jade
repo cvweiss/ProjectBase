@@ -1,4 +1,4 @@
-nav(class="navbar navbar-default")
+nav(class="navbar navbar-default navbar-fixed-bottom")
     div(class=container-fluid)
         div(class=navbar-header)
             a(class=navbar-brand)= $siteName
@@ -15,3 +15,5 @@ nav(class="navbar navbar-default")
                                     a(href='/logout/') Logout
                     else
                         a(href="/auth/google/login",role="button",aria-haspopup="true",aria-expanded="false")= "Sign In"
+
+
