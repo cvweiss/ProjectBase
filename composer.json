@@ -14,7 +14,7 @@
         "bshaffer/oauth2-server-php": "~1.8"
     },
     "autoload": {
-        "files": ["src/config.php", "src/jade.php", "src/slim.php"],
+        "files": ["src/init.php"],
         "psr-4": {
             "Project\\Supply\\": "src/classes/"
         }
