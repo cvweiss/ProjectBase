@@ -9,4 +9,3 @@ $jade = new \Tale\Jade\Renderer([
 ]);
 
 $view = new Render($jade);
-Config::set('view', $view);

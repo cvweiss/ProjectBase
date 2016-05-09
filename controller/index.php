@@ -1,5 +1,13 @@
 <?php
 
-$content = ['content' => 'Hello World!', 'title' => 'Home Page'];
+namespace Project\Supply\Controller;
 
-Project\Supply\Config::get('view')->render("index", $content);
+class index
+{
+    function doPage($app, $jade, $view, $values)
+    {
+        $content = ['content' => 'Hello World!', 'title' => 'Home Page'];
+
+        $view->render("index", $content);
+    }
+}

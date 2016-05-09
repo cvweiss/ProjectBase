@@ -18,6 +18,13 @@ class Mongo
         return self::$manager;
     }
 
+    public static function findDoc(string $collection, array $query = [], array $sort = null)
+    {
+        $result = self::find($collection, $query, $sort, 1);
+        if (sizeof($result)) return $result[0];
+        else return null;
+    }
+
     public static function find(string $collection, array $query = [], array $sort = null, int $limit = null):array
     {
         $options = [];
