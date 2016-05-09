@@ -21,8 +21,12 @@ class Router
             if (class_exists($class)) $class::doPage($this, $jade, $view, $args);
             array_unshift($args, array_pop($ex));
         }
-        $controller = new Controller\index();
-        $controller->doPage($this, $jade, $view, $args);
+        if ($uri == '/')
+        {
+            $controller = new Controller\index();
+            $controller->doPage($this, $jade, $view, $args);
+        }
+        die("404 $uri");
     }
 
     public function redirect($url, $code = 302)
