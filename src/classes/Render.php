@@ -15,5 +15,6 @@ class Render
     {
         $values = array_merge($values, Config::getAll());
         echo $this->jade->render($file, $values);
+        exit(); // Exit cleanly, ensures nothing else runs after the page has been rendered
     }
 }

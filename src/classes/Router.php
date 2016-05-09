@@ -18,8 +18,8 @@ class Router
         while (sizeof($ex) > 0)
         {
             $class = '\\Project\\Supply\\Controller\\' . implode('\\', $ex);
-            $class::doPage($this, $jade, $view, $args);
-            $args[] = array_pop($ex);
+            if (class_exists($class)) $class::doPage($this, $jade, $view, $args);
+            array_unshift($args, array_pop($ex));
         }
         $controller = new Controller\index();
         $controller->doPage($this, $jade, $view, $args);
