@@ -2,5 +2,11 @@
 
 namespace Project\Supply;
 
-session_destroy();
-$app->redirect('/');
+class logout
+{
+    function doPage($app, $jade, $view, $values)
+    {   
+        session_destroy();
+        $app->redirect('/');
+    }
+}
