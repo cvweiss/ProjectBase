@@ -1,6 +1,6 @@
 <?php
 
-use Project\Supply\Config;
+namespace Project\Supply;
 
 // Create and configure Slim app
 $app = new \Slim\App;
