@@ -1,4 +1,5 @@
 cache/
 composer.lock
 composer.phar
+config.json
 vendor/
