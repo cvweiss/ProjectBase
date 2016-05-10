@@ -7,8 +7,15 @@ class Router
     public function route($jade, $view)
     {
         $uri = $_SERVER['REQUEST_URI'];
+        $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
+        $call = "do$method";
 
-        $uri = $_SERVER['REQUEST_URI'];
+        if ($uri == '/')
+        {
+            $controller = new Controller\index();
+            $controller->$call($this, $jade, $view, $args);
+        }
+
         $ex = explode('?', $uri);
         $uri = $ex[0];
         $args = [];
@@ -18,14 +25,10 @@ class Router
         while (sizeof($ex) > 0)
         {
             $class = '\\Project\\Supply\\Controller\\' . implode('\\', $ex);
-            if (class_exists($class)) $class::doPage($this, $jade, $view, $args);
+            if (class_exists($class)) $class::$call($this, $jade, $view, $args);
             array_unshift($args, array_pop($ex));
         }
-        if ($uri == '/')
-        {
-            $controller = new Controller\index();
-            $controller->doPage($this, $jade, $view, $args);
-        }
+
         die("404 $uri");
     }
 

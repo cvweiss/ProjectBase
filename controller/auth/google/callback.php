@@ -4,7 +4,7 @@ namespace Project\Supply\Controller\auth\google;
 
 class callback
 {
-    function doPage($app, $jade, $view, $values)
+    function doGet($app, $jade, $view, $values)
     { 
         $auth = \Project\Supply\Config::get("oauth2");
 

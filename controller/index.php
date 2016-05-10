@@ -4,7 +4,7 @@ namespace Project\Supply\Controller;
 
 class index
 {
-    function doPage($app, $jade, $view, $values)
+    function doGet($app, $jade, $view, $values)
     {
         $content = ['content' => 'Hello World!', 'title' => 'Home Page'];
 
