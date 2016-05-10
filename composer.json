@@ -9,9 +9,8 @@
     ],
     "prefer-stable": true,
     "require": {
-        "slim/slim": "2.*",
-        "talesoft/tale-jade": "^1.4",
-        "league/oauth2-google": "^1.0"
+        "talesoft/tale-jade": "1.*",
+        "league/oauth2-google": "1.*"
     },
     "autoload": {
         "files": ["src/init.php"],
