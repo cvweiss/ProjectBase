@@ -1,10 +1,10 @@
 <?php
 
-namespace Project\Supply;
+namespace Project\Base;
 
 Config::setAll([
 	'debug' => true,
-	'siteName' => 'Project Supply',
+	'siteName' => 'Project Base',
 
 	// Project settings
 	'projectDir' => realpath(__DIR__ . '/../'),

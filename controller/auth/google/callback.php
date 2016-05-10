@@ -1,12 +1,12 @@
 <?php
 
-namespace Project\Supply\Controller\auth\google;
+namespace Project\Base\Controller\auth\google;
 
 class callback
 {
     function doGet($app, $jade, $view, $values)
     { 
-        $auth = \Project\Supply\Config::get("oauth2");
+        $auth = \Project\Base\Config::get("oauth2");
 
         $google = $auth['google'];
 
@@ -53,8 +53,8 @@ class callback
                 $name = $ownerDetails->getName();
                 $image = $ownerDetails->getAvatar();
 
-                $user = \Project\Supply\Mongo::findDoc("users", ['id' => $id]);
-                if ($user == null) $user = new \Project\Supply\MongoDoc("users");
+                $user = \Project\Base\Mongo::findDoc("users", ['id' => $id]);
+                if ($user == null) $user = new \Project\Base\MongoDoc("users");
                 $user->set("id", $id);
                 $user->set("name", $name);
                 $user->set("email", $email);

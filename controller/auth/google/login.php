@@ -1,12 +1,12 @@
 <?php
 
-namespace Project\Supply\Controller\auth\google;
+namespace Project\Base\Controller\auth\google;
 
 class login
 {
     function doGet($app, $jade, $view, $values)
     {
-        $auth = \Project\Supply\Config::get("oauth2");
+        $auth = \Project\Base\Config::get("oauth2");
 
         $google = $auth['google'];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Supply\Controller;
+namespace Project\Base\Controller;
 
 class index
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Supply;
+namespace Project\Base;
 
 class Config
 {

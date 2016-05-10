@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Supply;
+namespace Project\Base;
 
 $sessionTimeout = Config::get("session_timeout", 3600);
 

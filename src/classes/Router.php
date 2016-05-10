@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Supply;
+namespace Project\Base;
 
 class Router
 {
@@ -28,8 +28,12 @@ class Router
         foreach ($ex as $key=>$value) if ($ex[$key] == '') unset($ex[$key]);
         while (sizeof($ex) > 0)
         {
-            $class = '\\Project\\Supply\\Controller\\' . implode('\\', $ex);
-            if (class_exists($class)) $class::$call($this, $jade, $view, $args);
+            $class = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
+            if (class_exists($class))
+            {
+                $class::$call($this, $jade, $view, $args);
+                exit();
+            }
             array_unshift($args, array_pop($ex));
         }
 
@@ -46,5 +50,6 @@ class Router
     {
         http_response_code($errorCode);
         $this->view->render("error", ['errorCode' => $errorCode, 'errorMessage' => $errorMessage]);
+        exit();
     }
 }

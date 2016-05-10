@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Supply;
+namespace Project\Base;
 
 $jade = new \Tale\Jade\Renderer([
 	'paths' => [Config::get('projectDir') . '/view/'],

@@ -16,8 +16,8 @@
     "autoload": {
         "files": ["src/init.php"],
         "psr-4": {
-            "Project\\Supply\\": "src/classes/",
-            "Project\\Supply\\Controller\\": "controller/"
+            "Project\\Base\\": "src/classes/",
+            "Project\\Base\\Controller\\": "controller/"
         }
     },
     "scripts": {
