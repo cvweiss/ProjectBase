@@ -13,6 +13,7 @@ class Router
         $uri = $_SERVER['REQUEST_URI'];
         $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
         $call = "do$method";
+        $args = [];
 
         if ($uri == '/')
         {
@@ -22,7 +23,6 @@ class Router
 
         $ex = explode('?', $uri);
         $uri = $ex[0];
-        $args = [];
 
         $ex = explode('/', $uri);
         foreach ($ex as $key=>$value) if ($ex[$key] == '') unset($ex[$key]);
