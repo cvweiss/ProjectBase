@@ -4,8 +4,12 @@ namespace Project\Supply;
 
 class Router
 {
+    private $view = null;
+
     public function route($jade, $view)
     {
+        $this->view = $view;
+
         $uri = $_SERVER['REQUEST_URI'];
         $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
         $call = "do$method";
@@ -29,12 +33,18 @@ class Router
             array_unshift($args, array_pop($ex));
         }
 
-        die("404 $uri");
+        $this->error(404, "$uri could not be found");
     }
 
     public function redirect($url, $code = 302)
     {
         header("Location: $url", $code);
         exit();
+    }
+
+    public function error($errorCode, $errorMessage)
+    {
+        http_response_code($errorCode);
+        $this->view->render("error", ['errorCode' => $errorCode, 'errorMessage' => $errorMessage]);
     }
 }
