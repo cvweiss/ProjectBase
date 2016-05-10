@@ -17,7 +17,7 @@
         "files": ["src/init.php"],
         "psr-4": {
             "Project\\Base\\": "src/classes/",
-            "Project\\Base\\Controller\\": "controller/"
+            "Project\\Base\\Controller\\": "src/controller/"
         }
     },
     "scripts": {
