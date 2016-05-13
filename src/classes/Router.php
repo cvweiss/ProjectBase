@@ -15,29 +15,29 @@ class Router
         $call = "do$method";
         $args = [];
 
-        if ($uri == '/')
-        {
-            $controller = new Controller\index();
-            $controller->$call($this, $jade, $view, $args);
-        }
-
         $ex = explode('?', $uri);
         $uri = $ex[0];
+        if ($uri == '/') $uri = 'index';
 
         $ex = explode('/', $uri);
         foreach ($ex as $key=>$value) if ($ex[$key] == '') unset($ex[$key]);
         while (sizeof($ex) > 0)
         {
-            $class = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
-            if (class_exists($class))
-            {
-                $class::$call($this, $jade, $view, $args);
-                exit();
-            }
+            $className = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
+            $this->routeCall($className, $call, $jade, $view, $args);
             array_unshift($args, array_pop($ex));
         }
 
         $this->error(404, "$uri could not be found");
+    }
+
+    protected function routeCall($className, $call, $jade, $view, $args)
+    {
+        if (class_exists($className))
+        {   
+            $className::$call($this, $jade, $view, $args);
+            exit();
+        }
     }
 
     public function redirect($url, $code = 302)
