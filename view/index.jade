@@ -4,4 +4,5 @@ block content
   div
     h1.page-header= $title
     p.lead= $content
-    p= $user_name . ' ' . $user_email
+    if (isset($user_name))
+        p= $user_name . ' ' . $user_email

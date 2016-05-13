@@ -4,12 +4,8 @@ namespace Project\Base;
 
 class Router
 {
-    private $view = null;
-
-    public function route($jade, $view)
+    public function route($view)
     {
-        $this->view = $view;
-
         $uri = $_SERVER['REQUEST_URI'];
         $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
         $call = "do$method";
@@ -24,32 +20,21 @@ class Router
         while (sizeof($ex) > 0)
         {
             $className = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
-            $this->routeCall($className, $call, $jade, $view, $args);
+            $this->routeCall($className, $call, $view, $args);
             array_unshift($args, array_pop($ex));
         }
 
-        $this->error(404, "$uri could not be found");
+        Logger::debug("404 $uri");
+        $view->error(404, "$uri could not be found");
     }
 
-    protected function routeCall($className, $call, $jade, $view, $args)
+    protected function routeCall($className, $call, $view, $args)
     {
         if (class_exists($className))
         {   
-            $className::$call($this, $jade, $view, $args);
+            Logger::debug("200 $className $call");
+            $className::$call($view, $args);
             exit();
         }
-    }
-
-    public function redirect($url, $code = 302)
-    {
-        header("Location: $url", $code);
-        exit();
-    }
-
-    public function error($errorCode, $errorMessage)
-    {
-        http_response_code($errorCode);
-        $this->view->render("error", ['errorCode' => $errorCode, 'errorMessage' => $errorMessage]);
-        exit();
     }
 }

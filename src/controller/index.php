@@ -4,10 +4,10 @@ namespace Project\Base\Controller;
 
 class index
 {
-    function doGet($app, $jade, $view, $values)
+    function doGet($render, $values)
     {
         $content = ['content' => 'Hello World!', 'title' => 'Home Page'];
 
-        $view->render("index", $content);
+        $render->render("index", $content);
     }
 }

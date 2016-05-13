@@ -4,7 +4,7 @@ namespace Project\Base\Controller\auth\google;
 
 class callback
 {
-    function doGet($app, $jade, $view, $values)
+    function doGet($view, $values)
     { 
         $auth = \Project\Base\Config::get("oauth2");
 
@@ -37,7 +37,7 @@ class callback
                 $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
             } catch (\Exception $ex) 
             {
-                $app->redirect('/auth/google/login', 302);
+                $view->redirect('/auth/google/login', 302);
                 exit();
             }
 
@@ -63,7 +63,7 @@ class callback
                 $user->save();
 
                 $_SESSION["user_id"] = $user->get("id");
-                $app->redirect('/', 302);
+                $view->redirect('/', 302);
             } catch (\Exception $e) {
 
                 // Failed to get user details

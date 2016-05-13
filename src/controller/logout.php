@@ -4,9 +4,9 @@ namespace Project\Base\Controller;
 
 class logout
 {
-    function doGet($app, $jade, $view, $values)
+    function doGet($view, $values)
     {   
         session_destroy();
-        $app->redirect('/');
+        $view->redirect('/');
     }
 }

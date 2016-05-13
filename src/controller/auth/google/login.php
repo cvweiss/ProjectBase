@@ -4,7 +4,7 @@ namespace Project\Base\Controller\auth\google;
 
 class login
 {
-    function doGet($app, $jade, $view, $values)
+    function doGet($view, $values)
     {
         $auth = \Project\Base\Config::get("oauth2");
 
@@ -19,6 +19,6 @@ class login
         // If we don't have an authorization code then get one
         $authUrl = $provider->getAuthorizationUrl();
         $_SESSION['oauth2state'] = $provider->getState();
-        header('Location: ' . $authUrl);
+        $view->redirect($authUrl);
     }
 }

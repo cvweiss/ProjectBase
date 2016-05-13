@@ -17,4 +17,17 @@ class Render
         echo $this->jade->render($file, $values);
         exit(); // Exit cleanly, ensures nothing else runs after the page has been rendered
     }
+
+    public function redirect($url, $code = 302)
+    {
+        header("Location: $url", $code);
+        exit();
+    }
+
+    public function error($errorCode, $errorMessage)
+    {   
+        http_response_code($errorCode);
+        echo $this->jade->render("error", ['errorCode' => $errorCode, 'errorMessage' => $errorMessage]);
+        exit();
+    }
 }
