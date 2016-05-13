@@ -10,7 +10,8 @@
     "prefer-stable": true,
     "require": {
         "talesoft/tale-jade": "1.*",
-        "league/oauth2-google": "1.*"
+        "league/oauth2-google": "1.*",
+        "monolog/monolog": "^1.19"
     },
     "autoload": {
         "files": ["src/init.php"],
