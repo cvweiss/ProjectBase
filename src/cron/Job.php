@@ -27,9 +27,7 @@ class Job
         // Iterate through the cron classes
         $len = strlen(__NAMESPACE__);
         foreach ($classMap as $className => $location) {
-            if (substr($className, 0, $len) == __NAMESPACE__ && $className !== __CLASS__) {
-                self::checkClass($className);
-            }
+            if (strncmp($className, __NAMESPACE__, $len) === 0) self::checkClass($className);
         }
     }
 
@@ -67,7 +65,7 @@ class Job
         if (!($class instanceof Job)) throw new \RuntimeException("$className is not an instance of " . __CLASS__);
 
         $cron = \Cron\CronExpression::factory($class->getCron());
-        if ($cron->isDue()) {
+        if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {
             $queueJobs = new RedisQueue("queueJobs");
             $job = ['class' => $className, 'function' => 'execute', 'args' => []];
             $queueJobs->push($job);
