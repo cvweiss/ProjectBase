@@ -18,7 +18,7 @@ class Config
 
     public static function set(string $key, $value, $overRide = false)
     {
-        if ($overRide == false && isset(self::$settings[$key])) throw new \Exception("$key already set, cannot overwrite");
+        if ($overRide === false && isset(self::$settings[$key])) throw new \Exception("$key already set, cannot overwrite");
         self::$settings[$key] = $value;
     }
 
