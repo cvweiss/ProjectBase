@@ -4,7 +4,7 @@ namespace Project\Base\Controller\auth\google;
 
 class login
 {
-    public function doGet($view, $values)
+    public function doGet($view, $params)
     {
         $auth = \Project\Base\Config::get("oauth2");
 

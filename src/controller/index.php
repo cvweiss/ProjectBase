@@ -4,10 +4,11 @@ namespace Project\Base\Controller;
 
 class index
 {
-    public function doGet($render, $values)
+    public function doGet($render, $params)
     {
-        $content = ['content' => 'Hello World!', 'title' => 'Home Page'];
+        $params['content'] => 'Hello World';
+        $params['title'] = 'Home Page';
 
-        $render->render("index", $content);
+        $render->render("index", $params);
     }
 }
