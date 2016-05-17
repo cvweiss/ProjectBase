@@ -25,11 +25,11 @@ class Mongo
         else return null;
     }
 
-    public static function find(string $collection, array $query = [], array $sort = null, int $limit = null):array
+    public static function find(string $collection, array $query = [], array $sort = null, int $limit = 0):array
     {
         $options = [];
         if ($sort != null) $options['sort'] = $sort;
-        if ($limit != null) $options['limit'] = $limit;
+        if ($limit != 0) $options['limit'] = $limit;
 
         $query = new \MongoDB\Driver\Query($query, $options);
         $cursor = self::getConn()->executeQuery(self::$database . ".$collection", $query);
@@ -39,6 +39,7 @@ class Mongo
 
         foreach ($r as $row)
         {
+            $row = (array) $row;
             $result[] = new MongoDoc($collection, $row);
         }
 

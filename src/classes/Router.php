@@ -34,7 +34,7 @@ class Router
         {   
             Logger::debug("200 $className $call");
             $className::$call($view, $args);
-            exit();
+            throw new \Exception("Called $className::$call but code did not terminate as expected.");
         }
     }
 }

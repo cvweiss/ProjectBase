@@ -2,7 +2,7 @@
 
 namespace Project\Base;
 
-use \Monolog\Logger;
+use \Monolog\Logger as MonoLogger;
 use \Monolog\Handler\StreamHandler;
 
 class Logger
@@ -13,7 +13,7 @@ class Logger
     {
         if (self::$logger == null)
         {
-            self::$logger = new Logger('Project.Base');
+            self::$logger = new MonoLogger('Project.Base');
             self::$logger->pushHandler(new StreamHandler('/tmp/project.base.log'));
         }
         return self::$logger;

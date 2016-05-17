@@ -20,14 +20,14 @@ class callback
         {
 
             // Got an error, probably user denied access
-            exit('Got error: ' . $_GET['error']);
+            $view->error(0, 'Got error: ' . $_GET['error']);
 
         } elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state']))
         {
 
             // State is invalid, possible CSRF attack in progress
             unset($_SESSION['oauth2state']);
-            exit('Invalid state');
+            $view->error(0, 'Invalid state');
 
         } else 
         {
@@ -38,7 +38,6 @@ class callback
             } catch (\Exception $ex) 
             {
                 $view->redirect('/auth/google/login', 302);
-                exit();
             }
 
             // Optional: Now you have a token you can look up a users profile data
@@ -67,7 +66,7 @@ class callback
             } catch (\Exception $e) {
 
                 // Failed to get user details
-                exit('Something went wrong: ' . $e->getMessage());
+                $view->error(0, 'Something went wrong: ' . $e->getMessage());
             }
         }
     }

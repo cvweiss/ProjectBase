@@ -8,18 +8,18 @@ class MongoDoc
     private $data = null;
     private $updates = [];
 
-    public function __construct($collection, $row)
+    public function __construct(string $collection, array $row = null)
     {
         $this->collection = $collection;
-        $this->data = (array) $row;
+        $this->data = $row === null ? [] : $row;
     }
 
-    public function get($field)
+    public function get(string $field)
     {
         return $this->data[$field];
     }
 
-    public function set($field, $value)
+    public function set(string $field, $value)
     {
         $this->data[$field] = $value;
         $this->updates[$field] = $value;
@@ -27,7 +27,6 @@ class MongoDoc
 
     public function save()
     {
-        $return = null;
         if (isset($this->data['_id'])) $return = Mongo::update($this->collection, $this->data['_id'], $this->updates);
         else $return = Mongo::insert($this->collection, $this->data);
         $this->updates = [];
