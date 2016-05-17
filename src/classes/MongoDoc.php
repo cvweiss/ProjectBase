@@ -43,6 +43,6 @@ class MongoDoc
 
     public function __set($foo, $bar)
     {
-        throw new \Exception("use set(\$field, \$value)");
+        throw new \Exception("unable to set $foo to $bar; use set(\$field, \$value)");
     }
 }

@@ -4,7 +4,7 @@ namespace Project\Base\Controller\auth\google;
 
 class callback
 {
-    function doGet($view, $values)
+    public function doGet($view, $values)
     { 
         $auth = \Project\Base\Config::get("oauth2");
 
