@@ -65,7 +65,7 @@ class Job
         if (!($class instanceof Job)) throw new \RuntimeException("$className is not an instance of " . __CLASS__);
 
         $cron = \Cron\CronExpression::factory($class->getCron());
-        if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {
+        if ($cron->isDue() && get_class($class) != basename(__CLASS__) && Redis::canRun($className)) {
             $queueJobs = new RedisQueue("queueJobs");
             $job = ['class' => $className, 'function' => 'execute', 'args' => []];
             $queueJobs->push($job);
