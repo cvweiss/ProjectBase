@@ -14,4 +14,15 @@ class Redis
         }
         return self::$redis;
     }
+
+    public static function canRun(string $key, int $mutex = 60)
+    {
+        $redis = Redis::getRedis();
+        $time = time();
+        $time = $time - ($time % $mutex);
+        
+        $key = "$key:$time";
+        $locked = $redis->set($key, true, Array('nx', 'ex' => $mutex));
+        return $locked;
+    }
 }
