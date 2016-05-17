@@ -2,8 +2,8 @@
 
 namespace Project\Base;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use \Monolog\Logger;
+use \Monolog\Handler\StreamHandler;
 
 class Logger
 {
