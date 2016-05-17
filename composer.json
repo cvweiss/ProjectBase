@@ -11,13 +11,15 @@
     "require": {
         "talesoft/tale-jade": "1.*",
         "league/oauth2-google": "1.*",
-        "monolog/monolog": "^1.19"
+        "monolog/monolog": "^1.19",
+        "mtdowling/cron-expression": "^1.1"
     },
     "autoload": {
         "files": ["src/init.php"],
         "psr-4": {
             "Project\\Base\\": "src/classes/",
-            "Project\\Base\\Controller\\": "src/controller/"
+            "Project\\Base\\Controller\\": "src/controller/",
+            "Project\\Base\\Cron\\": "src/cron/"
         }
     },
     "scripts": {
