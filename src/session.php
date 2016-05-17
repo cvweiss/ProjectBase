@@ -4,11 +4,12 @@ namespace Project\Base;
 
 $sessionTimeout = Config::get("session_timeout", 3600);
 
+session_set_cookie_params($sessionTimeout);
 session_start();
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $sessionTimeout)) {
-    // last request was more than 30 minutes ago
-    session_unset();     // unset $_SESSION variable for the run-time 
-    session_destroy();   // destroy session data in storage
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $sessionTimeout))
+{
+    session_unset();
+    session_destroy();
 }
 $_SESSION['last_activity'] = time(); // update last activity time stamp
 
