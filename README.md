@@ -1,1 +1,4 @@
 # project-base
+
+# License
+MIT
