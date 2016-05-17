@@ -19,13 +19,7 @@ class Job
 
     public static function addJobs()
     {
-        // Only run this function once per minute
-        $redis = Redis::getRedis();
-        $time = time();
-        $time = $time - ($time % 60);
-        if ($redis->setNX("cron:$time", true) === false) return;
-
-        $queueJobs = new RedisQueue("queueJobs");
+        if (Redis::canRun(__CLASS__) === false) return;
 
         // Get the classmap
         $classMap = self::getClassMap();
@@ -34,7 +28,7 @@ class Job
         $len = strlen(__NAMESPACE__);
         foreach ($classMap as $className => $location) {
             if (substr($className, 0, $len) == __NAMESPACE__ && $className !== __CLASS__) {
-                self::checkClass($queueJobs, $className);
+                self::checkClass($className);
             }
         }
     }
@@ -67,13 +61,14 @@ class Job
         throw new \RuntimeException("Unable to locate composer's loader");
     }
 
-    private static function checkClass($queueJobs, $className)
+    private static function checkClass($className)
     {
         $class = new $className();
         if (!($class instanceof Job)) throw new \RuntimeException("$className is not an instance of " . __CLASS__);
 
         $cron = \Cron\CronExpression::factory($class->getCron());
         if ($cron->isDue()) {
+            $queueJobs = new RedisQueue("queueJobs");
             $job = ['class' => $className, 'function' => 'execute', 'args' => []];
             $queueJobs->push($job);
         }
