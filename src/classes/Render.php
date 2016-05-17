@@ -24,10 +24,13 @@ class Render
         exit();
     }
 
-    public function error($errorCode, $errorMessage)
+    public function error($errorCode, $errorMessage, $params)
     {   
+        $params['errorCode'] = $errorCode;
+        $params['errorMessage'] = $errorMessage;
+
         http_response_code($errorCode);
-        echo $this->jade->render("error", ['errorCode' => $errorCode, 'errorMessage' => $errorMessage]);
+        echo $this->jade->render("error", $params);
         exit();
     }
 }

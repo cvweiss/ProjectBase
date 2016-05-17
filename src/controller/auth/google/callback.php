@@ -18,16 +18,15 @@ class callback
 
         if (!empty($_GET['error']))
         {
-
             // Got an error, probably user denied access
-            $view->error(0, 'Got error: ' . $_GET['error']);
+            $view->error(0, 'Got error: ' . $_GET['error'], $params);
 
         } elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state']))
         {
 
             // State is invalid, possible CSRF attack in progress
             unset($_SESSION['oauth2state']);
-            $view->error(0, 'Invalid state');
+            $view->error(0, 'Invalid state', $params);
 
         } else 
         {
@@ -66,7 +65,7 @@ class callback
             } catch (\Exception $e) {
 
                 // Failed to get user details
-                $view->error(0, 'Something went wrong: ' . $e->getMessage());
+                $view->error(0, 'Something went wrong: ' . $e->getMessage(), $params);
             }
         }
     }

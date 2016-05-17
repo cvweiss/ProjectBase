@@ -9,11 +9,12 @@ class Router
         $uri = $_SERVER['REQUEST_URI'];
         $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
         $call = "do$method";
-        $args = [];
+        $args = Config::getAll();
 
         $ex = explode('?', $uri);
         $uri = $ex[0];
         if ($uri == '/') $uri = 'index';
+        $args['title'] = $uri;
 
         $ex = explode('/', $uri);
         foreach ($ex as $key=>$value) if ($ex[$key] == '') unset($ex[$key]);
@@ -25,7 +26,7 @@ class Router
         }
 
         Logger::debug("404 $uri");
-        $view->error(404, "$uri could not be found");
+        $view->error(404, "$uri could not be found", $args);
     }
 
     protected function routeCall($className, $call, $view, $args)
