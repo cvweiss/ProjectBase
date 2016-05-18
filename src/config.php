@@ -14,7 +14,7 @@ Config::setAll([
 	'projectDir' => $projectDir
 ]);
 
-if (file_exists($projecDir . '/config.json'))
+if (file_exists($projectDir . '/config.json'))
 {
     $raw = file_get_contents($projectDir . '/config.json');
     $config = json_decode($raw, true);
