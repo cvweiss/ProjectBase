@@ -5,6 +5,7 @@ namespace Project\Base\Cron;
 use Project\Base\Config;
 use Project\Base\Redis;
 use Project\Base\RedisQueue;
+use Project\Base\Logger;
 
 class Job
 {
@@ -33,6 +34,8 @@ class Job
 
     public static function doJob()
     {
+        self::addJobs();
+
         $queueJobs = new RedisQueue("queueJobs");
         $job = $queueJobs->pop();
 
@@ -59,6 +62,7 @@ class Job
         if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {
             $queueJobs = new RedisQueue("queueJobs");
             $job = ['class' => $className, 'function' => 'execute', 'args' => []];
+            Logger::debug("Adding job $className::execute");
             $queueJobs->push($job);
         }
     }
