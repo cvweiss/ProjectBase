@@ -14,7 +14,7 @@ class Logger
         if (self::$logger == null)
         {
             self::$logger = new MonoLogger('Project.Base');
-            self::$logger->pushHandler(new StreamHandler('/tmp/project.base.log'));
+            self::$logger->pushHandler(new MongoLogger());
         }
         return self::$logger;
     }
