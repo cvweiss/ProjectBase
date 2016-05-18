@@ -46,17 +46,8 @@ class Job
 
     private static function getClassMap()
     {   
-        // Find composer
-        $classes = get_declared_classes();
-
-        foreach ($classes as $class) {
-            if (substr($class, 0, 18) == "ComposerAutoloader") {
-                return $class::getLoader()->getClassMap();
-            }
-        }
-
-        // Well something failed
-        throw new \RuntimeException("Unable to locate composer's loader");
+        $loader = require Config::get('projectDir') . '/vendor/autoload.php';
+        return $loader->getClassMap();
     }
 
     private static function checkClass($className)
