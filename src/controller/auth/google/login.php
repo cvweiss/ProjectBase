@@ -2,6 +2,8 @@
 
 namespace Project\Base\Controller\auth\google;
 
+use Project\Base\Session;
+
 class login
 {
     public function doGet($view, $params)
@@ -18,7 +20,7 @@ class login
 
         // If we don't have an authorization code then get one
         $authUrl = $provider->getAuthorizationUrl();
-        $_SESSION['oauth2state'] = $provider->getState();
+        Session::getSession()->set('oauth2state', $provider->getState());
         $view->redirect($authUrl);
     }
 }

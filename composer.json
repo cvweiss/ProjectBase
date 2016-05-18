@@ -12,7 +12,8 @@
         "talesoft/tale-jade": "1.*",
         "league/oauth2-google": "1.*",
         "monolog/monolog": "^1.19",
-        "mtdowling/cron-expression": "^1.1"
+        "mtdowling/cron-expression": "^1.1",
+        "aura/session": "^2.0"
     },
     "autoload": {
         "files": ["src/init.php"],

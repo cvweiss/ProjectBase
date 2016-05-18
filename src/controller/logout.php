@@ -2,11 +2,13 @@
 
 namespace Project\Base\Controller;
 
+use Project\Base\Session;
+
 class logout
 {
     public function doGet($view, $params)
     {   
-        session_destroy();
+        Session::destroy();
         $view->redirect('/');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Project\Base\Controller\auth\google;
 
+use Project\Base\Session;
+
 class callback
 {
     public function doGet($view, $params)
@@ -16,18 +18,15 @@ class callback
                 'redirectUri'  => $google['redirect_uris'][0]
         ]);
 
+        $session = Session::getSession();
         if (!empty($_GET['error']))
         {
             // Got an error, probably user denied access
-            $view->error(0, 'Got error: ' . $_GET['error'], $params);
+            $view->redirect('/logout/');
 
-        } elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state']))
+        } elseif (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state')))
         {
-
-            // State is invalid, possible CSRF attack in progress
-            unset($_SESSION['oauth2state']);
-            $view->error(0, 'Invalid state', $params);
-
+            $view->redirect('/logout/');
         } else 
         {
             // Try to get an access token (using the authorization code grant)
@@ -60,7 +59,7 @@ class callback
                 $user->set("oauth2", "google");
                 $user->save();
 
-                $_SESSION["user_id"] = $user->get("id");
+                $session->set("userID", $user->get("id"));
                 $view->redirect('/', 302);
             } catch (\Exception $e) {
 

@@ -2,22 +2,13 @@
 
 namespace Project\Base;
 
-$sessionTimeout = Config::get("session_timeout", 3600);
+$session = Session::getSession();
 
-session_set_cookie_params($sessionTimeout);
-session_start();
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $sessionTimeout))
+$userID = $session->get("userID");
+if ($userID !== null)
 {
-    session_unset();
-    session_destroy();
-}
-$_SESSION['last_activity'] = time(); // update last activity time stamp
-
-$user_id = @$_SESSION['user_id'];
-if ($user_id !== null)
-{
-    $user = Mongo::findDoc("users", ['id' => $user_id]);
-    if ($user != null)
+    $user = Mongo::findDoc("users", ['id' => $userID]);
+    if ($user !== null)
     {
         Config::set("user_email", $user->get("email"));
         Config::set("user_name", $user->get("name"));
