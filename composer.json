@@ -24,6 +24,6 @@
         }
     },
     "scripts": {
-        "pre-update-cmd": "mkdir -p cache 2>/dev/null"
+        "post-update-cmd": "Project\\Base\\Setup::prepareProject"
     }
 }
