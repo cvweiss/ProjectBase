@@ -10,11 +10,13 @@ class Session
     public static function getSession($segmentName = __NAMESPACE__)
     {
         if (self::$segment === null) {
-            $sessionTimeout = Config::get("session_timeout", 3600);
+            $sessionTimeout = (int) Config::get("session_timeout", 3600);
 
+            session_set_save_handler(new RedisSessionHandler(), true);
             $sessionFactory = new \Aura\Session\SessionFactory;
+
             self::$session = $sessionFactory->newInstance($_COOKIE);
-            self::$session->setCookieParams(array('lifetime' => $sessionTimeout));
+            self::$session->setCookieParams(['lifetime' => $sessionTimeout, 'secure' => true, 'httponly' => true]);
             self::$segment = self::$session->getSegment($segmentName);
         }
         return self::$segment;
@@ -23,5 +25,10 @@ class Session
     public static function destroy()
     {
         self::$session->destroy();
+    }
+
+    public static function commit()
+    {
+        self::$session->commit();
     }
 }

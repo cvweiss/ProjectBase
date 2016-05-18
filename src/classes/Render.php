@@ -15,13 +15,13 @@ class Render
     {
         $values = array_merge($values, Config::getAll());
         echo $this->jade->render($file, $values);
-        exit(); // Exit cleanly, ensures nothing else runs after the page has been rendered
+        $this->finish();
     }
 
     public function redirect($url, $code = 302)
     {
         header("Location: $url", $code);
-        exit();
+        $this->finish();
     }
 
     public function error($errorCode, $errorMessage, $params)
@@ -31,6 +31,12 @@ class Render
 
         http_response_code($errorCode);
         echo $this->jade->render("error", $params);
+        $this->finish();
+    }
+
+    public function finish()
+    {
+        Session::commit();
         exit();
     }
 }
