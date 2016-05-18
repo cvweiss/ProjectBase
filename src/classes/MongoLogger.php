@@ -9,7 +9,7 @@ class MongoLogger extends AbstractProcessingHandler
     protected function write(array $record)
     {
         unset($record["formatted"]);
-        $dttm = new \MongoDB\BSON\UTCDateTime($record['datetime']->getTimestamp());
+        $dttm = new \MongoDB\BSON\UTCDateTime($record['datetime']->getTimestamp() * 1000);
         $record['dttm'] = $dttm;
         
         Mongo::insert("log", $record);
