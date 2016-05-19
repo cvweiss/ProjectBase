@@ -12,12 +12,11 @@ class Router
         $args = Config::getAll();
 
         $ex = explode('?', $uri);
-        $uri = $ex[0];
-        if ($uri == '/') $uri = 'index';
+        $uri = $ex[0] == '/' ? 'index' : $ex[0];
         $args['title'] = $uri;
 
         $ex = explode('/', $uri);
-        foreach ($ex as $key=>$value) if ($ex[$key] == '') unset($ex[$key]);
+        $ex = array_diff($ex, ['']);
         while (sizeof($ex) > 0)
         {
             $className = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
