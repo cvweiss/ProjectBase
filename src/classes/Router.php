@@ -34,7 +34,8 @@ class Router
         if (class_exists($className))
         {   
             Logger::debug("200 $className $call");
-            $className::$call($view, $args);
+            $class = new $className();
+            $class->$call($view, $args);
             throw new \Exception("Called $className::$call but code did not terminate as expected.");
         }
     }
