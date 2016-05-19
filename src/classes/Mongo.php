@@ -49,8 +49,10 @@ class Mongo
     public static function insert($collection, $doc)
     {
         $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);  
-        $bulk->insert($doc);
-        return self::getConn()->executeBulkWrite(self::$database . ".$collection", $bulk);
+        $id = $bulk->insert($doc);
+        $return = self::getConn()->executeBulkWrite(self::$database . ".$collection", $bulk);
+
+        return ['_id' => $id, 'result' => $return];
     }
 
     public static function update($collection, $id, $updates)

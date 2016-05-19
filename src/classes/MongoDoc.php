@@ -19,6 +19,11 @@ class MongoDoc
         return $this->data[$field];
     }
 
+    public function getAll()
+    {
+        return $this->data;
+    }
+
     public function set(string $field, $value)
     {
         $this->data[$field] = $value;
@@ -27,8 +32,14 @@ class MongoDoc
 
     public function save()
     {
-        if (isset($this->data['_id'])) $return = Mongo::update($this->collection, $this->data['_id'], $this->updates);
-        else $return = Mongo::insert($this->collection, $this->data);
+        if (isset($this->data['_id'])) {
+            $return = Mongo::update($this->collection, $this->data['_id'], $this->updates);
+        }
+        else {
+            $return = Mongo::insert($this->collection, $this->data);
+            $this->data['_id'] = $return['_id'];
+            $return = $return['result'];
+        }
         $this->updates = [];
 
         return (count($return->getWriteErrors()) == 0);
