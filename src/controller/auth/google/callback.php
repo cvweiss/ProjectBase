@@ -3,6 +3,7 @@
 namespace Project\Base\Controller\auth\google;
 
 use Project\Base\Session;
+use Project\Base\Db;
 
 class callback
 {
@@ -19,53 +20,42 @@ class callback
         ]);
 
         $session = Session::getSession();
-        if (!empty($_GET['error']))
-        {
+        if (!empty($_GET['error'])) {
             // Got an error, probably user denied access
             $view->redirect('/logout/');
 
-        } elseif (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state')))
-        {
+        } elseif (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state'))) {
             $view->redirect('/logout/');
-        } else 
-        {
+        } else {
             // Try to get an access token (using the authorization code grant)
-            try 
-            {
+            try {
                 $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
-            } catch (\Exception $ex) 
-            {
+            } catch (\Exception $ex) {
                 $view->redirect('/auth/google/login', 302);
             }
 
-            // Optional: Now you have a token you can look up a users profile data
-            try {
 
-                // We got an access token, let's now get the owner details
-                $ownerDetails = $provider->getResourceOwner($token);
+            // We got an access token, let's now get the owner details
+            $ownerDetails = $provider->getResourceOwner($token);
 
-                // Details
-                $id = $ownerDetails->getID();
-                $email = $ownerDetails->getEmail();
-                $name = $ownerDetails->getName();
-                $image = $ownerDetails->getAvatar();
+            // Details
+            $id = $ownerDetails->getID();
+            $email = $ownerDetails->getEmail();
+            $name = $ownerDetails->getName();
+            $image = $ownerDetails->getAvatar();
 
-                $user = \Project\Base\Mongo::findDoc("users", ['id' => $id]);
-                if ($user == null) $user = new \Project\Base\MongoDoc("users");
-                $user->set("id", $id);
-                $user->set("name", $name);
-                $user->set("email", $email);
-                $user->set("image", $image);
-                $user->set("oauth2", "google");
-                $user->save();
+            $user = Db::get()->users->findOne(['id' => $id]);
+            if ($user == null) $user = new \MongoDB\Model\BSONDocument;
+            $user->id = $id;
+            $user->name = $name;
+            $user->email = $email;
+            $user->image = $image;
+            $user->oauth2 = "google";
+            $options = isset($user->_id) ? [] : ['upsert' => true];
+            Db::get()->users->replaceOne($user, $user, $options);
 
-                $session->set("userID", $user->get("id"));
-                $view->redirect('/', 302);
-            } catch (\Exception $e) {
-
-                // Failed to get user details
-                $view->error(0, 'Something went wrong: ' . $e->getMessage(), $params);
-            }
+            $session->set("userID", $user->id);
+            $view->redirect('/', 302);
         }
     }
 }
