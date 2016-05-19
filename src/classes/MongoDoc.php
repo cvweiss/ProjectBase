@@ -30,25 +30,42 @@ class MongoDoc
         $this->updates[$field] = $value;
     }
 
-    public function save()
+    public function save():bool
     {
-        if (isset($this->data['_id'])) {
-            $return = Mongo::update($this->collection, $this->data['_id'], $this->updates);
-        }
-        else {
-            $return = Mongo::insert($this->collection, $this->data);
-            $this->data['_id'] = $return['_id'];
-            $return = $return['result'];
-        }
+        $return = isset($this->data['_id']) ? $this->update() : $this->insert();
         $this->updates = [];
+
+        return $return;
+    }
+
+    protected function insert():bool
+    {   
+        $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
+        $id = $bulk->insert($this->data);
+        $this->data['_id'] = $id;
+        $return = Mongo::executeBulkWrite($this->collection, $bulk);
+
+        return  (count($return->getWriteErrors()) == 0);
+    }
+
+    protected function update():bool
+    {   
+        // If we have nothing to update then move along
+        if (sizeof($this->updates) == 0) return true;
+
+        $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
+        $bulk->update(['_id' => $this->data['_id']], ['$set' => $this->updates]);
+        $return = Mongo::executeBulkWrite($this->collection, $bulk);
 
         return (count($return->getWriteErrors()) == 0);
     }
 
-    public function delete()
-    {
-        $return = Mongo::delete($this->collection, $this->data['_id']);
-        unset($this->data['_id']);
+    public function delete():\boolean
+    {   
+        $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
+        $bulk->delete(['_id' => $this->data['_id']]);
+        $return = Mongo::executeBulkWrite($this->collection, $bulk);
+
         return (count($return->getWriteErrors()) == 0);
     }
 
