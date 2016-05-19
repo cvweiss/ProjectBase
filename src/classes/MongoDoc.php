@@ -60,7 +60,7 @@ class MongoDoc
         return (count($return->getWriteErrors()) == 0);
     }
 
-    public function delete():\boolean
+    public function delete():bool
     {   
         $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
         $bulk->delete(['_id' => $this->data['_id']]);
