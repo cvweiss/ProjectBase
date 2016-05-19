@@ -6,8 +6,8 @@ class Router
 {
     public function route($view)
     {
-        $uri = $_SERVER['REQUEST_URI'];
-        $method = ucfirst(strtolower($_SERVER['REQUEST_METHOD']));
+        $uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $method = ucfirst(strtolower(filter_input(INPUT_SERVER, 'REQUEST_METHOD')));
         $call = "do$method";
         $args = Config::getAll();
 

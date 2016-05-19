@@ -11,12 +11,15 @@ class callback
         $provider = $this->getProvider();
 
         $session = Session::getSession();
-        if (!empty($_GET['error']) || (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state')))) {
+        $error = filter_input(INPUT_GET, 'error');
+        $state = filter_input(INPUT_GET, 'state');
+        if (!empty($error) || (empty($state) || ($state !== $session->get('oauth2state')))) {
             $view->redirect('/logout/');
         }
 
         // Try to get an access token (using the authorization code grant)
-        $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+        $code = filter_input(INPUT_GET, 'code');
+        $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
 
         // Optional: Now you have a token you can look up a users profile data
         // We got an access token, let's now get the owner details
