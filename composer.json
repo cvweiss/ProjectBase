@@ -13,8 +13,7 @@
         "league/oauth2-google": "1.*",
         "monolog/monolog": "^1.19",
         "mtdowling/cron-expression": "^1.1",
-        "aura/session": "^2.0",
-        "mongodb/mongodb": "^1.0.0"
+        "aura/session": "^2.0"
     },
     "autoload": {
         "files": ["src/init.php"],

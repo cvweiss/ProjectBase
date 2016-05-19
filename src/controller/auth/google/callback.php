@@ -3,16 +3,15 @@
 namespace Project\Base\Controller\auth\google;
 
 use Project\Base\Session;
-use Project\Base\Db;
-use Project\Base\Config;
-use Project\Base\Logger;
 
 class callback
 {
     public function doGet($view, $params)
     { 
-        $auth = Config::get("oauth2");
+        $auth = \Project\Base\Config::get("oauth2");
+
         $google = $auth['google'];
+
         $provider = new \League\OAuth2\Client\Provider\Google([
                 'clientId'     => $google['client_id'],
                 'clientSecret' => $google['client_secret'],
@@ -20,35 +19,53 @@ class callback
         ]);
 
         $session = Session::getSession();
-        if (!empty($_GET['error']) || (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state')))) {
+        if (!empty($_GET['error']))
+        {
+            // Got an error, probably user denied access
             $view->redirect('/logout/');
-        } else {
+
+        } elseif (empty($_GET['state']) || ($_GET['state'] !== $session->get('oauth2state')))
+        {
+            $view->redirect('/logout/');
+        } else 
+        {
             // Try to get an access token (using the authorization code grant)
-            try {
+            try 
+            {
                 $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
-            } catch (\Exception $ex) {
+            } catch (\Exception $ex) 
+            {
                 $view->redirect('/auth/google/login', 302);
             }
 
-            // We got an access token, let's now get the owner details
-            $ownerDetails = $provider->getResourceOwner($token);
+            // Optional: Now you have a token you can look up a users profile data
+            try {
 
-            // Create (if necessary) and store the user
-            $user = Db::get()->users->findOne(['id' => $ownerDetails->getID()]);
-            if ($user == null) $user = new \MongoDB\Model\BSONDocument;
+                // We got an access token, let's now get the owner details
+                $ownerDetails = $provider->getResourceOwner($token);
 
-            $user->id = $ownerDetails->getID();
-            $user->name = $ownerDetails->getName();
-            $user->email = $ownerDetails->getEmail();
-            $user->image = $ownerDetails->getAvatar();
-            $user->oauth2 = "google";
-            $options = isset($user->_id) ? [] : ['upsert' => true];
-            Db::get()->users->replaceOne($user, $user, $options);
+                // Details
+                $id = $ownerDetails->getID();
+                $email = $ownerDetails->getEmail();
+                $name = $ownerDetails->getName();
+                $image = $ownerDetails->getAvatar();
 
-            // User is logged in
-            Logger::info($user->name . " (" . $user->email . ") has logged in.");
-            $session->set("userID", $user->id);
-            $view->redirect('/', 302);
+                $user = \Project\Base\Mongo::findDoc("users", ['id' => $id]);
+                if ($user == null) $user = new \Project\Base\MongoDoc("users");
+                $user->set("id", $id);
+                $user->set("name", $name);
+                $user->set("email", $email);
+                $user->set("image", $image);
+                $user->set("oauth2", "google");
+                $user->save();
+
+                $session->set("userID", $user->get("id"));
+                $view->redirect('/', 302);
+            } catch (\Exception $e) {
+
+                // Failed to get user details
+                $view->error(0, 'Something went wrong: ' . $e->getMessage(), $params);
+            }
         }
     }
 }
