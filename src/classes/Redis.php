@@ -17,7 +17,7 @@ class Redis
 
     public static function canRun(string $key, int $mutex = 60)
     {
-        $redis = Redis::getRedis();
+        $redis = self::getRedis();
         $time = time();
         $time = $time - ($time % $mutex);
         
