@@ -12,7 +12,6 @@ class MongoLogger extends AbstractProcessingHandler
         $dttm = new \MongoDB\BSON\UTCDateTime($record['datetime']->getTimestamp() * 1000);
         $record['dttm'] = $dttm;
         
-        $doc = new MongoDoc("log", $record);
-        $doc->save();
+        M::get()->log->insertOne($record);
     }
 }
