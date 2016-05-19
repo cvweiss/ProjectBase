@@ -8,7 +8,7 @@ class callback
 {
     public function doGet($view, $params)
     { 
-        $this->validate();
+        $this->validate($view);
 
         // Try to get an access token (using the authorization code grant)
         $code = filter_input(INPUT_GET, 'code');
@@ -34,7 +34,7 @@ class callback
         $view->redirect('/', 302);
     }
 
-    private function validate()
+    private function validate($view)
     {
         $session = Session::getSession();
         $error = filter_input(INPUT_GET, 'error');
