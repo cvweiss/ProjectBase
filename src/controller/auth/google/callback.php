@@ -8,17 +8,11 @@ class callback
 {
     public function doGet($view, $params)
     { 
-        $provider = $this->getProvider();
-
-        $session = Session::getSession();
-        $error = filter_input(INPUT_GET, 'error');
-        $state = filter_input(INPUT_GET, 'state');
-        if (!empty($error) || (empty($state) || ($state !== $session->get('oauth2state')))) {
-            $view->redirect('/logout/');
-        }
+        $this->validate();
 
         // Try to get an access token (using the authorization code grant)
         $code = filter_input(INPUT_GET, 'code');
+        $provider = $this->getProvider();
         $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
 
         // Optional: Now you have a token you can look up a users profile data
@@ -36,8 +30,18 @@ class callback
         $user->set("oauth2", "google");
         $user->save();
 
-        $session->set("userID", $id);
+        Session::getSession()->set("userID", $id);
         $view->redirect('/', 302);
+    }
+
+    private function validate()
+    {
+        $session = Session::getSession();
+        $error = filter_input(INPUT_GET, 'error');
+        $state = filter_input(INPUT_GET, 'state');
+        if (!empty($error) || (empty($state) || ($state !== $session->get('oauth2state')))) {
+            $view->redirect('/logout/');
+        }
     }
 
     private function getProvider()
