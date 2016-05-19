@@ -8,6 +8,7 @@ class callback
 {
     public function doGet($view, $params)
     { 
+        unset($params);
         $this->validate($view);
 
         // Try to get an access token (using the authorization code grant)
