@@ -17,7 +17,7 @@ Run composer with the following command:
 ```
 ./composer.phar -o update
 ```
-`update` will update, as well as install, all dependecies. The `-o` flag instructs composer to optimize the mappings into a class map, which is very useful if you want to use the Cron functionality.
+`update` will update, as well as install, all dependencies. The `-o` flag instructs composer to optimize the mappings into a class map, which is very useful if you want to use the Cron functionality.
 
 ##### Cron
 
