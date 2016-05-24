@@ -11,24 +11,19 @@ class callback
         unset($params);
         $this->validate($view);
 
-        // Try to get an access token (using the authorization code grant)
-        $code = filter_input(INPUT_GET, 'code');
-        $provider = $this->getProvider();
-        $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
-
-        // Optional: Now you have a token you can look up a users profile data
-        // We got an access token, let's now get the owner details
-        $ownerDetails = $provider->getResourceOwner($token);
+        $ownerDetails = $this->getOwnerDetails();
 
         $id = $ownerDetails->getID();
         $user = \Project\Base\Mongo::findDoc("users", ['id' => $id]);
         if ($user == null) $user = new \Project\Base\MongoDoc("users");
 
-        $user->set("id", $id);
-        $user->set("name", $ownerDetails->getName());
-        $user->set("email", $ownerDetails->getEmail());
-        $user->set("image", $ownerDetails->getAvatar());
-        $user->set("oauth2", "google");
+        $user->setAll([
+            "id" => $id,
+            "name" => $ownerDetails->getName(),
+            "email" => $ownerDetails->getEmail(),
+            "image" => $ownerDetails->getAvatar(),
+            "oauth2" => "google"
+        ]);
         $user->save();
 
         Session::getSession()->set("userID", $id);
@@ -56,5 +51,14 @@ class callback
         ]);
 
         return $provider;
+    }
+
+    private function getOwnerDetails()
+    {
+        $code = filter_input(INPUT_GET, 'code');
+        $provider = $this->getProvider();
+        $token = $provider->getAccessToken('authorization_code', ['code' => $code]);
+
+        return $provider->getResourceOwner($token);
     }
 }
