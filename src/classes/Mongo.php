@@ -4,16 +4,20 @@ namespace Project\Base;
 
 class Mongo
 {
+    private static $pid = null;
     private static $manager = null;
     private static $database = null;
 
     protected static function getConn()
     {
-        $server = Config::get("mongo_server", "127.0.0.1");
-        $port   = (int) Config::get("mongo_port", 27017);
-        self::$database = Config::get("mongo_db", "projectsupply");
+        if (self::$manager == null || self::$pid != getmypid()) {
+            $server = Config::get("mongo_server", "127.0.0.1");
+            $port   = (int) Config::get("mongo_port", 27017);
+            self::$database = Config::get("mongo_db", "projectsupply");
 
-        if (self::$manager == null) self::$manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
+            self::$manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
+            self::$pid = getmypid();
+        }
 
         return self::$manager;
     }
