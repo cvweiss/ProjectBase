@@ -30,6 +30,11 @@ class MongoDoc
         $this->updates[$field] = $value;
     }
 
+    public function setAll(array $params)
+    {
+        foreach ($params as $key=>$value) $this->set($key, $value);
+    }
+
     public function save():bool
     {
         $return = isset($this->data['_id']) ? $this->update() : $this->insert();
