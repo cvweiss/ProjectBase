@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 namespace Project\Base\Cron;
