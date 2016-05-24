@@ -15,7 +15,9 @@ class callback
 
         $id = $ownerDetails->getID();
         $user = \Project\Base\Mongo::findDoc("users", ['id' => $id]);
-        if ($user == null) $user = new \Project\Base\MongoDoc("users");
+        if ($user == null) {
+            $user = new \Project\Base\MongoDoc("users");
+        }
 
         $user->setAll([
             "id" => $id,
