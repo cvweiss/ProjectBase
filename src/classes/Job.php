@@ -1,11 +1,6 @@
 <?php
 
-namespace Project\Base\Cron;
-
-use Project\Base\Config;
-use Project\Base\Redis;
-use Project\Base\RedisQueue;
-use Project\Base\Logger;
+namespace Project\Base;
 
 class Job
 {
@@ -14,7 +9,7 @@ class Job
         return Config::get("Cron:" . basename(get_class($this)), "* * * * *");
     }
 
-    public function execute()
+    public function execute(array $params)
     {
     }
 
@@ -26,25 +21,37 @@ class Job
         $classMap = self::getClassMap();
 
         // Iterate through the cron classes
-        $len = strlen(__NAMESPACE__);
+        $len = strlen(__NAMESPACE__ . "Cron\\");
         foreach ($classMap as $className => $location) {
             if (strncmp($className, __NAMESPACE__, $len) === 0) self::checkClass($className);
         }
     }
 
-    public static function doJob()
+    public static function doJob($timeout = 60):bool
     {
         self::addJobs();
+        $time = time() + $timeout;
+        $queueJobs = new RedisQueue("queueJobs", $timeout);
 
-        $queueJobs = new RedisQueue("queueJobs");
-        $job = $queueJobs->pop();
+        while (time() <= $time) {
+            $job = $queueJobs->pop();
 
-        if ($job === null) return;
+            $pid = $job === null ? 0 : pcntl_fork();
+            if ($pid) return self::runJob($job);
+        }
+        return false;
+    }
 
-        $class = $job['class'];
-        $function = $job['function'];
-        $args = $job['args'];
-        $class::$function($args);
+    private static function runJob($job):bool
+    {
+        if ($job !== null) {
+            $class = $job['class'];
+            $function = $job['function'];
+            $args = $job['args'];
+            $class::$function($args);
+        }
+
+        return true;
     }
 
     private static function getClassMap()
@@ -56,7 +63,7 @@ class Job
     private static function checkClass($className)
     {
         $class = new $className();
-        if (!($class instanceof Job)) throw new \RuntimeException("$className is not an instance of " . __CLASS__);
+        if (!($class instanceof Job)) return; 
 
         $cron = \Cron\CronExpression::factory($class->getCron());
         if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {
