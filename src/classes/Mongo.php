@@ -10,7 +10,7 @@ class Mongo
     private $manager = null;
     private $database = null;
 
-    public static function getConn($server = null, $port = null, $database = null)
+    public static function get($server = null, $port = null, $database = null)
     {
         if (self::$instance == null || self::$pid != getmypid()) {
             $server = $server ?? Config::get("mongo_server", "127.0.0.1");
