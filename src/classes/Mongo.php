@@ -26,10 +26,25 @@ class Mongo
         return self::$instance;
     }
 
+    public static function getCollection($collection)
+    {
+        return new MongoCollection($collection, self::get());
+    }
+
     protected function __construct($manager, $database)
     {
         $this->manager = $manager;
         $this->database = $database;
+    }
+
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+    public function getDatabase()
+    {
+        return $this->database;
     }
 
     public function findDoc(string $collection, array $query = [], array $sort = null)
