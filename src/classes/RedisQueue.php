@@ -7,14 +7,13 @@ namespace Project\Base;
 */
 class RedisQueue
 {
-    private $queueName = null;
+    private $queueName;
+    private $blockTime;
 
-    public function __construct($queueName)
+    public function __construct(string $queueName, int $blockTime = 1)
     {
-        $redis = Redis::getRedis();
-
         $this->queueName = $queueName;
-        $redis->sadd('queues', $queueName);
+        $this->blockTime = $blockTime;
     }
 
     public function push($value)
@@ -28,9 +27,9 @@ class RedisQueue
     {
         $redis = Redis::getRedis();
 
-        $array = $redis->blPop($this->queueName, 1);
+        $array = $redis->blPop($this->queueName, $this->blockTime);
         if (sizeof($array) == 0) {
-            return;
+            return null;
         }
 
         return unserialize($array[1]);
