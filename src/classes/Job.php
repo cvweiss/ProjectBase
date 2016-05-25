@@ -54,10 +54,10 @@ class Job
         }
     }
 
-    public static function addJob(string $className, string $function, array $args)
+    public static function addJob(string $className, string $function, array $args = [])
     {
         $queueJobs = new RedisQueue("queueJobs");
-        $job = ['class' => $className, 'function' => 'execute', 'args' => []];
+        $job = ['class' => $className, 'function' => 'execute', 'args' => $args];
         Logger::debug("Adding job $className::$function");
         $queueJobs->push($job);
     }
