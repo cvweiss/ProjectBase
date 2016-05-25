@@ -4,32 +4,10 @@ namespace Project\Base;
 
 class Job
 {
-    public function getCron()
-    {
-        return Config::get("Cron:" . basename(get_class($this)), "* * * * *");
-    }
-
-    public function execute(array $params)
-    {
-    }
-
-    public static function addJobs()
-    {
-        if (Redis::canRun(__CLASS__) === false) return;
-
-        // Get the classmap
-        $classMap = self::getClassMap();
-
-        // Iterate through the cron classes
-        $len = strlen(__NAMESPACE__ . "Cron\\");
-        foreach ($classMap as $className => $location) {
-            if (strncmp($className, __NAMESPACE__, $len) === 0) self::checkClass($className);
-        }
-    }
-
-    public static function doJob($timeout = 60):bool
+    public static function doJobs($timeout = 60):bool
     {
         self::addJobs();
+
         $time = time() + $timeout;
         $queueJobs = new RedisQueue("queueJobs", $timeout);
 
@@ -37,7 +15,7 @@ class Job
             $job = $queueJobs->pop();
 
             $pid = $job === null ? 0 : pcntl_fork();
-            if ($pid) return self::runJob($job);
+            if ($pid == 0) return self::runJob($job);
         }
         return false;
     }
@@ -45,33 +23,43 @@ class Job
     private static function runJob($job):bool
     {
         if ($job !== null) {
-            $class = $job['class'];
+            $class = new $job['class'];
             $function = $job['function'];
             $args = $job['args'];
-            $class::$function($args);
+            $class->$function($args);
         }
 
         return true;
     }
 
-    private static function getClassMap()
+    public static function addJobs()
     {   
-        $loader = require Config::get('projectDir') . '/vendor/autoload.php';
-        return $loader->getClassMap();
+        if (Redis::canRun(__CLASS__) === false) return;
+
+        $jobs = Config::get("cronjobs", []);
+        foreach ($jobs as $className) {
+            self::checkClass('\\' . $className);
+        }
     }
 
     private static function checkClass($className)
     {
         $class = new $className();
-        if (!($class instanceof Job)) return; 
+
+        if (!($class instanceof CronJob)) throw new IllegalException("$className is not an instanceof \\Project\\Base\\CronJob");
 
         $cron = \Cron\CronExpression::factory($class->getCron());
         if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {
-            $queueJobs = new RedisQueue("queueJobs");
-            $job = ['class' => $className, 'function' => 'execute', 'args' => []];
-            Logger::debug("Adding job $className::execute");
-            $queueJobs->push($job);
+            self::addJob($className, 'execute', []);
         }
+    }
+
+    public static function addJob(string $className, string $function, array $args)
+    {
+        $queueJobs = new RedisQueue("queueJobs");
+        $job = ['class' => $className, 'function' => 'execute', 'args' => []];
+        Logger::debug("Adding job $className::$function");
+        $queueJobs->push($job);
     }
 }
 
