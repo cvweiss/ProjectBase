@@ -5,37 +5,47 @@ namespace Project\Base;
 class Mongo
 {
     private static $pid = null;
-    private static $manager = null;
-    private static $database = null;
+    private static $instance = null;
 
-    protected static function getConn()
+    private $manager = null;
+    private $database = null;
+
+    public static function getConn($server = null, $port = null, $database = null)
     {
-        if (self::$manager == null || self::$pid != getmypid()) {
-            $server = Config::get("mongo_server", "127.0.0.1");
-            $port   = (int) Config::get("mongo_port", 27017);
-            self::$database = Config::get("mongo_db", "projectsupply");
+        if (self::$instance == null || self::$pid != getmypid()) {
+            $server = $server ?? Config::get("mongo_server", "127.0.0.1");
+            $port   = $port ?? Config::get("mongo_port", 27017);
+            $database = $database ?? Config::get("mongo_db", "projectsupply");
 
-            self::$manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
+            $manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
+
+            self::$instance = new Mongo($manager, $database);
             self::$pid = getmypid();
         }
 
-        return self::$manager;
+        return self::$instance;
     }
 
-    public static function findDoc(string $collection, array $query = [], array $sort = null)
+    protected function __construct($manager, $database)
     {
-        $result = self::find($collection, $query, $sort, 1);
+        $this->manager = $manager;
+        $this->database = $database;
+    }
+
+    public function findDoc(string $collection, array $query = [], array $sort = null)
+    {
+        $result = $this->find($collection, $query, $sort, 1);
         return sizeof($result) > 0 ? $result[0] : null;
     }
 
-    public static function find(string $collection, array $query = [], array $sort = null, int $limit = 0):array
+    public function find(string $collection, array $query = [], array $sort = null, int $limit = 0):array
     {
         $options = [];
         if ($sort != null) $options['sort'] = $sort;
         if ($limit != 0) $options['limit'] = $limit;
 
         $query = new \MongoDB\Driver\Query($query, $options);
-        $cursor = self::getConn()->executeQuery(self::$database . ".$collection", $query);
+        $cursor = $this->manager->executeQuery($this->database . ".$collection", $query);
 
         $r = $cursor->toArray();
         array_reverse($r);
@@ -50,8 +60,8 @@ class Mongo
         return $result;
     }
 
-    public static function executeBulkWrite($collection, $bulk)
+    public function executeBulkWrite($collection, $bulk)
     {
-        return self::getConn()->executeBulkWrite(self::$database . ".$collection", $bulk);
+        return $this->manager->executeBulkWrite($this->database . ".$collection", $bulk);
     }
 }

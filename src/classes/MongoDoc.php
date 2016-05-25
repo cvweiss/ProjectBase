@@ -50,7 +50,7 @@ class MongoDoc
         $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
         $id = $bulk->insert($this->data);
         $this->data['_id'] = $id;
-        $return = Mongo::executeBulkWrite($this->collection, $bulk);
+        $return = Mongo::getConn()->executeBulkWrite($this->collection, $bulk);
 
         return  (count($return->getWriteErrors()) == 0);
     }
@@ -62,7 +62,7 @@ class MongoDoc
 
         $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
         $bulk->update(['_id' => $this->data['_id']], ['$set' => $this->updates]);
-        $return = Mongo::executeBulkWrite($this->collection, $bulk);
+        $return = Mongo::getConn()->executeBulkWrite($this->collection, $bulk);
 
         return (count($return->getWriteErrors()) == 0);
     }
@@ -71,7 +71,7 @@ class MongoDoc
     {   
         $bulk = new \MongoDB\Driver\BulkWrite(['ordered' => true]);
         $bulk->delete(['_id' => $this->data['_id']]);
-        $return = Mongo::executeBulkWrite($this->collection, $bulk);
+        $return = Mongo::getConn()->executeBulkWrite($this->collection, $bulk);
 
         return (count($return->getWriteErrors()) == 0);
     }

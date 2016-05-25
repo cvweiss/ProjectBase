@@ -7,7 +7,7 @@ $session = Session::getSession();
 $userID = $session->get("userID");
 if ($userID !== null)
 {
-    $user = Mongo::findDoc("users", ['id' => $userID]);
+    $user = Mongo::getConn()->findDoc("users", ['id' => $userID]);
     if ($user !== null)
     {
         Config::set("user_email", $user->get("email"));
