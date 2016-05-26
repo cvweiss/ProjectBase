@@ -7,6 +7,7 @@ class Job
     public static function doJobs($timeout = 60):bool
     {
         self::addJobs();
+        $maxChildren = Config::get("maxJobChildren", 20); 
 
         $time = time() + $timeout;
         $queueJobs = new JobQueue();
@@ -18,14 +19,21 @@ class Job
             $pid = ($job === null) ? 0 : pcntl_fork();
             if ($job !== null && $pid === 0) return self::runJob($job);
             $children[$pid] = true;
-            while (count($children) >= 20) {
-                $status = null;
-                $pidDone = pcntl_waitpid(0, $status);
-                unset($children[$pidDone]);
-            }
+            self::checkChildren($maxChildren, $children);
         }
         return false;
     }
+
+    private static function checkChildren(int $maxChildren, array &$children):bool
+    {
+        while (count($children) >= $maxChildren) {
+            $status = null;
+            $pidDone = pcntl_waitpid(0, $status);
+            unset($children[$pidDone]);
+        }
+        return count($children) > $maxChildren;
+    }
+
 
     private static function runJob($job):bool
     {
