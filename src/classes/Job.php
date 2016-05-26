@@ -24,14 +24,13 @@ class Job
         return false;
     }
 
-    private static function checkChildren(int $maxChildren, array &$children):bool
+    private static function checkChildren(int $maxChildren, array &$children)
     {
         while (count($children) >= $maxChildren) {
             $status = null;
             $pidDone = pcntl_waitpid(0, $status);
             unset($children[$pidDone]);
         }
-        return count($children) > $maxChildren;
     }
 
 
