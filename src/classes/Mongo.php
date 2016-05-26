@@ -47,10 +47,10 @@ class Mongo
         return $this->database;
     }
 
-    public function findDoc(string $collection, array $query = [], array $sort = null, bool $create = false)
+    public function findDoc(string $collection, array $query = [], array $sort = null, bool $createIfMissing = false)
     {
         $result = $this->find($collection, $query, $sort, 1);
-        return sizeof($result) > 0 ? $result[0] : new MongoDoc($collection);
+        return sizeof($result) > 0 ? $result[0] : ($createIfMissing ? new MongoDoc($collection) : null);
     }
 
     public function find(string $collection, array $query = [], array $sort = null, int $limit = 0):array
