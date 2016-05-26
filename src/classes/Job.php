@@ -9,13 +9,20 @@ class Job
         self::addJobs();
 
         $time = time() + $timeout;
-        $queueJobs = new RedisQueue("queueJobs", $timeout);
+        $queueJobs = new JobQueue();
+        $children = [];
 
         while (time() <= $time) {
             $job = $queueJobs->pop();
 
-            $pid = $job === null ? 0 : pcntl_fork();
-            if ($pid == 0) return self::runJob($job);
+            $pid = ($job === null) ? 0 : pcntl_fork();
+            if ($job !== null && $pid === 0) return self::runJob($job);
+            $children[$pid] = true;
+            while (count($children) >= 20) {
+                $status = null;
+                $pidDone = pcntl_waitpid(0, $status);
+                unset($children[$pidDone]);
+            }
         }
         return false;
     }
@@ -54,12 +61,11 @@ class Job
         }
     }
 
-    public static function addJob(string $className, string $function, array $args = [])
+    public static function addJob(string $className, string $function, array $args = [], int $priority = 0)
     {
-        $queueJobs = new RedisQueue("queueJobs");
-        $job = ['class' => $className, 'function' => 'execute', 'args' => $args];
-        Logger::debug("Adding job $className::$function");
-        $queueJobs->push($job);
+        $queueJobs = new JobQueue();
+        $job = ['class' => $className, 'function' => $function, 'args' => $args];
+        $queueJobs->push($job, $priority);
     }
 }
 
