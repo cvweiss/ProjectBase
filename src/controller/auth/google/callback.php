@@ -2,6 +2,8 @@
 
 namespace Project\Base\Controller\auth\google;
 
+use Project\Base\Config;
+use Project\Base\Mongo;
 use Project\Base\Session;
 
 class callback
@@ -14,10 +16,7 @@ class callback
         $ownerDetails = $this->getOwnerDetails();
 
         $id = $ownerDetails->getID();
-        $user = \Project\Base\Mongo::get()->findDoc("users", ['id' => $id]);
-        if ($user == null) {
-            $user = new \Project\Base\MongoDoc("users");
-        }
+        $user = Mongo::get()->findDoc("users", ['id' => $id], null, true);
 
         $user->setAll([
             "id" => $id,
@@ -44,7 +43,7 @@ class callback
 
     private function getProvider()
     {
-        $auth = \Project\Base\Config::get("oauth2");
+        $auth = Config::get("oauth2");
         $google = $auth['google'];
         $provider = new \League\OAuth2\Client\Provider\Google([
                 'clientId'     => $google['client_id'],
