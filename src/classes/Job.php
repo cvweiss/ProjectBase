@@ -39,6 +39,7 @@ class Job
         if ($job !== null) {
             $class = new $job['class'];
             $function = $job['function'];
+            \cli_set_process_title('php cron.php running: ' . $job['class'] . '->' . $function);
             $args = $job['args'];
             $class->$function($args);
         }
