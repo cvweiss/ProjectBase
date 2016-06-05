@@ -44,4 +44,9 @@ class Tools
 
         return ['result' => $body, 'httpCode' => $httpCode];
     }
+
+    public static function output($text)
+    {
+        echo date('Y-m-d H:i:s')." > $text\n";
+    }
 }
