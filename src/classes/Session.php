@@ -10,7 +10,7 @@ class Session
     public static function getSession($segmentName = __NAMESPACE__)
     {
         if (self::$segment === null) {
-            $sessionTimeout = (int) Config::get("session_timeout", 3600);
+            $sessionTimeout = (int) Config::getInstance()->get("session_timeout", 3600);
 
             session_set_save_handler(new RedisSessionHandler(), true);
             $sessionFactory = new \Aura\Session\SessionFactory;

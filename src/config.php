@@ -6,7 +6,9 @@ $vendorDir = dirname(dirname(dirname(__DIR__)));
 // Composer insists that libs are kept in vendor, so we'll make that assumption
 $projectDir = basename($vendorDir) == 'vendor' ? dirname($vendorDir) : dirname(__DIR__);
 
-Config::setAll([
+$config = Config::getInstance();
+
+$config->setAll([
 	'debug' => true,
 	'siteName' => 'Project Base',
 
@@ -17,6 +19,8 @@ Config::setAll([
 if (file_exists($projectDir . '/config.json'))
 {
     $raw = file_get_contents($projectDir . '/config.json');
-    $config = json_decode($raw, true);
-    foreach ($config as $key=>$value) Config::set($key, $value, true);
+    $configValues = json_decode($raw, true);
+    foreach ($configValues as $key=>$value) {
+        $config->set($key, $value, true);
+    }
 }

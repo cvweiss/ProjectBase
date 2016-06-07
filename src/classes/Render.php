@@ -13,7 +13,7 @@ class Render
 
     public function render($file, $values = [])
     {
-        $values = array_merge($values, Config::getAll());
+        $values = array_merge($values, Config::getInstance()->getAll());
         echo $this->jade->render($file, $values);
         $this->finish();
     }

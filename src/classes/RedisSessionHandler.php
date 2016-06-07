@@ -23,7 +23,7 @@ class RedisSessionHandler implements \SessionHandlerInterface
 
     public function write($id, $data)
     {
-        $sessionTimeout = (int) Config::get("session_timeout", 3600);
+        $sessionTimeout = (int) Config::getInstance()->get("session_timeout", 3600);
         $redis = Redis::getRedis();
 
         $redis->setex("sess:$id", $sessionTimeout, $data);

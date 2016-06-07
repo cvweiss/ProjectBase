@@ -10,8 +10,10 @@ class Redis
     public static function getRedis()
     {
         if (self::$redis === null || self::$pid !== getmypid()) {
+            $config = Config::getInstance();
+
             self::$redis = new \Redis();
-            self::$redis->connect(Config::get('redisServer', '127.0.0.1'), Config::get('redisPort', 6379), 3600);
+            self::$redis->connect($config->get('redisServer', '127.0.0.1'), $config->get('redisPort', 6379), 3600);
             self::$pid = getmypid();
         }
         return self::$redis;

@@ -4,26 +4,38 @@ namespace Project\Base;
 
 class Config
 {
-    private static $settings = [];
+    private static $instance = null;
 
-    public static function get(string $key, $default = null)
+    public static function getInstance()
     {
-        return self::$settings[$key] ?? $default;
+        self::$instance = self::$instance ?? new Config();
+        return self::$instance;
     }
 
-    public static function getAll():array
+    private $settings = [];
+
+    public function get(string $key, $default = null)
     {
-        return self::$settings;
+        return $this->settings[$key] ?? $default;
     }
 
-    public static function set(string $key, $value, $overRide = false)
+    public function getAll():array
     {
-        if ($overRide === false && isset(self::$settings[$key])) throw new \Exception("$key already set, cannot overwrite");
-        self::$settings[$key] = $value;
+        return $this->settings;
     }
 
-    public static function setAll(array $keys)
+    public function set(string $key, $value, $overRide = false)
     {
-        foreach ($keys as $key=>$value) self::set($key, $value);
+        if ($overRide === false && isset($this->settings[$key])) {
+            throw new \Exception("$key already set, cannot overwrite");
+        }
+        $this->settings[$key] = $value;
+    }
+
+    public function setAll(array $keys)
+    {
+        foreach ($keys as $key=>$value) {
+            $this->set($key, $value);
+        }
     }
 }

@@ -2,12 +2,14 @@
 
 namespace Project\Base;
 
-$paths = [Config::get('projectDir') . '/view/', Config::get('projectDir') . '/vendor/cvweiss/project.base/view/'];
+$config = Config::getInstance();
+
+$paths = [$config->get('projectDir') . '/view/', $config->get('projectDir') . '/vendor/cvweiss/project.base/view/'];
 
 $jade = new \Tale\Jade\Renderer([
 	'paths' => $paths,
-	'pretty' => Config::get('debug', false),
-        'cachePath' => Config::get('cachePath', Config::get('projectDir') . '/cache/jade/'),
+	'pretty' => $config->get('debug', false),
+        'cachePath' => $config->get('cachePath', $config->get('projectDir') . '/cache/jade/'),
 ]);
 
 $view = new Render($jade);

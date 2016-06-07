@@ -9,7 +9,7 @@ class Router
         $uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
         $method = ucfirst(strtolower(filter_input(INPUT_SERVER, 'REQUEST_METHOD')));
         $call = "do$method";
-        $params = Config::getAll();
+        $params = Config::getInstance()->getAll();
 
         $ex = explode('?', $uri);
         $uri = $ex[0] == '/' ? 'index' : $ex[0];

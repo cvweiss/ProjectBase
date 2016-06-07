@@ -13,9 +13,10 @@ class Mongo
     public static function get($server = null, $port = null, $database = null)
     {
         if (self::$instance == null || self::$pid != getmypid()) {
-            $server = $server ?? Config::get("mongo_server", "127.0.0.1");
-            $port   = $port ?? Config::get("mongo_port", 27017);
-            $database = $database ?? Config::get("mongo_db", "projectsupply");
+            $config = Config::getInstance();
+            $server = $server ?? $config->get("mongo_server", "127.0.0.1");
+            $port   = $port ?? $config->get("mongo_port", 27017);
+            $database = $database ?? $config->get("mongo_db", "projectsupply");
 
             $manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
 

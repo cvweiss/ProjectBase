@@ -7,7 +7,7 @@ class Job
     public static function doJobs($timeout = 60):bool
     {
         self::addJobs();
-        $maxChildren = Config::get("maxJobChildren", 20); 
+        $maxChildren = Config::getInstance()->get("maxJobChildren", 20); 
 
         $time = time() + $timeout;
         $queueJobs = new JobQueue();
@@ -51,7 +51,7 @@ class Job
     {   
         if (Redis::canRun(__CLASS__) === false) return;
 
-        $jobs = Config::get("cronjobs", []);
+        $jobs = Config::getInstance()->get("cronjobs", []);
         foreach ($jobs as $className) {
             self::checkClass('\\' . $className);
         }

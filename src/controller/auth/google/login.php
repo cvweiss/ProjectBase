@@ -3,12 +3,13 @@
 namespace Project\Base\Controller\auth\google;
 
 use Project\Base\Session;
+use Project\Base\Config;
 
 class login
 {
     public function doGet($view, $params)
     {
-        $auth = \Project\Base\Config::get("oauth2");
+        $auth = Config::getInstance()->get("oauth2");
 
         $google = $auth['google'];
 

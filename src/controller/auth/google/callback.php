@@ -43,7 +43,7 @@ class callback
 
     private function getProvider()
     {
-        $auth = Config::get("oauth2");
+        $auth = Config::getInstance()->get("oauth2");
         $google = $auth['google'];
         $provider = new \League\OAuth2\Client\Provider\Google([
                 'clientId'     => $google['client_id'],
