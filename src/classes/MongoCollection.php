@@ -2,6 +2,8 @@
 
 namespace Project\Base;
 
+use MongoDB\Driver\BulkWrite;
+
 class MongoCollection
 {
     private $collection = null;
@@ -33,5 +35,17 @@ class MongoCollection
         $results = $cursor->toArray()[0];
 
         return (int) $results->n ?? 0;
+    }
+
+    public function saveAll(array $docs):bool
+    {
+        $bulk = new BulkWrite(['ordered' => true]);
+
+        foreach ($docs as $doc) {
+            $doc->save($bulk);
+        }
+
+        $return = Mongo::get()->executeBulkWrite($this->collection, $bulk);
+        return  (count($return->getWriteErrors()) == 0);
     }
 }
