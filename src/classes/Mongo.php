@@ -2,6 +2,8 @@
 
 namespace Project\Base;
 
+use \MongoDB\Driver\Manager;
+
 class Mongo
 {
     private static $pid = null;
@@ -10,15 +12,15 @@ class Mongo
     private $manager = null;
     private $database = null;
 
-    public static function get($server = null, $port = null, $database = null)
+    public static function get(Config $config = null):Mongo
     {
         if (self::$instance == null || self::$pid != getmypid()) {
-            $config = Config::getInstance();
+            $config = $config ?? Config::getInstance();
             $server = $server ?? $config->get("mongo_server", "127.0.0.1");
             $port   = $port ?? $config->get("mongo_port", 27017);
             $database = $database ?? $config->get("mongo_db", "projectsupply");
 
-            $manager = new \MongoDB\Driver\Manager("mongodb://$server:$port");
+            $manager = new Manager("mongodb://$server:$port");
 
             self::$instance = new Mongo($manager, $database);
             self::$pid = getmypid();
@@ -27,7 +29,7 @@ class Mongo
         return self::$instance;
     }
 
-    public static function getCollection($collection)
+    public static function getCollection($collection):MongoCollection
     {
         return new MongoCollection($collection, self::get());
     }
@@ -38,17 +40,17 @@ class Mongo
         $this->database = $database;
     }
 
-    public function getManager()
+    public function getManager():Manager
     {
         return $this->manager;
     }
 
-    public function getDatabase()
+    public function getDatabase():string
     {
         return $this->database;
     }
 
-    public function findDoc(string $collection, array $query = [], array $sort = null, bool $createIfMissing = false)
+    public function findDoc(string $collection, array $query = [], array $sort = null, bool $createIfMissing = false):MongoDoc
     {
         $result = $this->find($collection, $query, $sort, 1);
         return sizeof($result) > 0 ? $result[0] : ($createIfMissing ? new MongoDoc($collection) : null);
