@@ -18,7 +18,7 @@ class MongoDoc
 
     public function get(string $field)
     {
-        return $this->data[$field];
+        return $this->data[$field] ?? null;
     }
 
     public function getAll()
@@ -26,17 +26,19 @@ class MongoDoc
         return $this->data;
     }
 
-    public function set(string $field, $value)
+    public function set(string $field, $value):MongoDoc
     {
         $this->data[$field] = $value;
         $this->updates[$field] = $value;
+        return $this;
     }
 
-    public function setAll(array $params)
+    public function setAll(array $params):MongoDoc
     {
         foreach ($params as $key=>$value) {
             $this->set($key, $value);
         }
+        return $this;
     }
 
     public function save(BulkWrite $bulk = null):bool
