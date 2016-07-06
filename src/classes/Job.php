@@ -26,7 +26,7 @@ class Job
 
     private static function checkChildren(int $maxChildren, array &$children)
     {
-        while (count($children) >= $maxChildren) {
+        while (count($children) > $maxChildren) {
             $status = null;
             $pidDone = pcntl_waitpid(0, $status);
             unset($children[$pidDone]);
