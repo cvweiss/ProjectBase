@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 // Load Composer
 require __DIR__ . '/../vendor/autoload.php';

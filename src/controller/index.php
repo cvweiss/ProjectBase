@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base\Controller;
+namespace cvweiss\projectbase\Controller;
 
 class index
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Project\Base\Controller\auth\google;
+namespace cvweiss\projectbase\Controller\auth\google;
 
-use Project\Base\Session;
-use Project\Base\Config;
+use cvweiss\projectbase\Session;
+use cvweiss\projectbase\Config;
 
 class login
 {

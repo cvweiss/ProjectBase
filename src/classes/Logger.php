@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 use \Monolog\Logger as MonoLogger;
 use \Monolog\Handler\StreamHandler;
@@ -13,7 +13,7 @@ class Logger
     {
         if (self::$logger == null)
         {
-            self::$logger = new MonoLogger('Project.Base');
+            self::$logger = new MonoLogger('projectbase');
             self::$logger->pushHandler(new MongoLogger());
         }
         return self::$logger;

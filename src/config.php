@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 $vendorDir = dirname(dirname(dirname(__DIR__)));
 // Composer insists that libs are kept in vendor, so we'll make that assumption

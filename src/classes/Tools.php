@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 class Tools
 {
@@ -35,7 +35,7 @@ class Tools
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Project Base Curl Fetcher");
+        curl_setopt($ch, CURLOPT_USERAGENT, "cvweiss\\projectbase Curl Fetcher");
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

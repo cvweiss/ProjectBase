@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 class Job
 {
@@ -62,7 +62,7 @@ class Job
     {
         $class = new $className();
 
-        if (!($class instanceof CronJob)) throw new IllegalException("$className is not an instanceof \\Project\\Base\\CronJob");
+        if (!($class instanceof CronJob)) throw new IllegalException("$className is not an instanceof \\cvweiss\projectbase\\CronJob");
 
         $cron = \Cron\CronExpression::factory($class->getCron());
         if ($cron->isDue() && get_class($class) != basename(__CLASS__)) {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Project\Base\Controller;
+namespace cvweiss\projectbase\Controller;
 
-use Project\Base\Session;
+use cvweiss\projectbase\Session;
 
 class logout
 {

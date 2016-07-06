@@ -1,10 +1,10 @@
 <?php
 
-namespace Project\Base\Controller\auth\google;
+namespace cvweiss\projectbase\Controller\auth\google;
 
-use Project\Base\Config;
-use Project\Base\Mongo;
-use Project\Base\Session;
+use cvweiss\projectbase\Config;
+use cvweiss\projectbase\Mongo;
+use cvweiss\projectbase\Session;
 
 class callback
 {

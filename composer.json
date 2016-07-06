@@ -18,12 +18,12 @@
     "autoload": {
         "files": ["src/init.php"],
         "psr-4": {
-            "Project\\Base\\": "src/classes/",
-            "Project\\Base\\Controller\\": "src/controller/",
-            "Project\\Base\\Cron\\": "src/cron/"
+            "cvweiss\\projectbase\\": "src/classes/",
+            "cvweiss\\projectbase\\Controller\\": "src/controller/",
+            "cvweiss\\projectbase\\Cron\\": "src/cron/"
         }
     },
     "scripts": {
-        "post-update-cmd": "Project\\Base\\Setup::prepareProject"
+        "post-update-cmd": "cvweiss\\projectbase\\Setup::prepareProject"
     }
 }

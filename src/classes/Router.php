@@ -1,6 +1,6 @@
 <?php
 
-namespace Project\Base;
+namespace cvweiss\projectbase;
 
 class Router
 {
@@ -19,7 +19,7 @@ class Router
         $ex = array_diff($ex, ['']);
         while (sizeof($ex) > 0)
         {
-            $className = '\\Project\\Base\\Controller\\' . implode('\\', $ex);
+            $className = '\\cvweiss\projectbase\\Controller\\' . implode('\\', $ex);
             $this->routeCall($className, $call, $view, $params);
             array_unshift($params, array_pop($ex));
         }
