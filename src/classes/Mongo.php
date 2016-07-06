@@ -16,9 +16,9 @@ class Mongo
     {
         if (self::$instance == null || self::$pid != getmypid()) {
             $config = $config ?? Config::getInstance();
-            $server = $server ?? $config->get("mongo_server", "127.0.0.1");
-            $port   = $port ?? $config->get("mongo_port", 27017);
-            $database = $database ?? $config->get("mongo_db", "projectsupply");
+            $server = $config->get("mongo_server", "127.0.0.1");
+            $port   = $config->get("mongo_port", 27017);
+            $database = $config->get("mongo_db", "projectsupply");
 
             $manager = new Manager("mongodb://$server:$port");
 
