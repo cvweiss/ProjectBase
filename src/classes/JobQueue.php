@@ -31,7 +31,7 @@ class JobQueue
     public function push($value, int $priority = 0)
     {
         if ($priority < 0 || $priority >= $this->numQueues) {
-            throw new \IllegalArgumentException("Invalid priority");
+            throw new \InvalidArgumentException("Invalid priority");
         }
 
         $this->redis->rPush($this->queueName . $priority, serialize($value));
