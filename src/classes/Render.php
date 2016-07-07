@@ -14,7 +14,7 @@ class Render
     public function render($file, $values = [])
     {
         $values = array_merge($values, Config::getInstance()->getAll());
-        echo $this->jade->render($file, $values);
+        echo file_exists($file) ? $this->jade->render($file, $values) : "Render $file not found";
         $this->finish();
     }
 
