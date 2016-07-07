@@ -4,7 +4,7 @@ namespace cvweiss\projectbase;
 
 $config = Config::getInstance();
 
-$paths = [$config->get('projectDir') . '/view/', $config->get('projectDir') . '/vendor/cvweiss/project.base/view/'];
+$paths = [$config->get('projectDir') . '/view/', $config->get('projectDir') . '/vendor/cvweiss/projectbase/view/'];
 
 $jade = new \Tale\Jade\Renderer([
 	'paths' => $paths,
