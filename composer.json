@@ -24,6 +24,7 @@
         }
     },
     "scripts": {
+        "post-install-cmd": "cvweiss\\projectbase\\Setup::prepareProject",
         "post-update-cmd": "cvweiss\\projectbase\\Setup::prepareProject"
     }
 }
