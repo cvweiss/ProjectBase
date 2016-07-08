@@ -11,7 +11,7 @@ nav(class="navbar navbar-default")
                             span(class=caret)
                             ul(class="dropdown-menu")
                                 li
-                                    a(href='/logout/')= Logout
+                                    a(href='/logout/')= "Logout"
                     else if $googleAuth
                             a(href="/auth/google/login",role="button",aria-haspopup="true",aria-expanded="false")= "Sign In"
                     else

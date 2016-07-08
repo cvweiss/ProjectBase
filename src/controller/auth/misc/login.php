@@ -21,9 +21,9 @@ class login
         $message = null;
 
         $user = Mongo::get()->findDoc('users', ['id' => $userID]);
-        $hash = $user->get('password');
+        $hash = $user !== null ? $user->get('password') : null;
 
-        if (password_verify($pass, $hash)) {
+        if ($hash != null && password_verify($pass, $hash)) {
             $message = "Successful login.";
             Session::getSession()->set("userID", $userID);
             $params['user_name'] = $userID;
