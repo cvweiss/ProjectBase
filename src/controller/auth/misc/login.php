@@ -20,7 +20,6 @@ class login
         $error = null;
         $message = null;
 
-        $array = ['id' => $userID];
         $user = Mongo::get()->findDoc('users', ['id' => $userID]);
         $hash = $user->get('password');
 
@@ -32,8 +31,8 @@ class login
             $error = "No such credentials.";
         }
         
-        $params['errorCode'] = $error == null ? 'Success' : 'Error';
-        $params['errorMessage'] = $error == null ? $message : $error;
+        $params['errorCode'] = $error === null ? 'Success' : 'Error';
+        $params['errorMessage'] = $error === null ? $message : $error;
         $render->render('error', $params);
     }
 }

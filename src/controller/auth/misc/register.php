@@ -35,8 +35,8 @@ class register
             Session::getSession()->set("userID", $userID);
         }
 
-        $params['errorCode'] = $error == null ? 'Success' : 'Error';
-        $params['errorMessage'] = $error == null ? $message : $error;
+        $params['errorCode'] = $error === null ? 'Success' : 'Error';
+        $params['errorMessage'] = $error === null ? $message : $error;
         $render->render('error', $params);
     }
 }
