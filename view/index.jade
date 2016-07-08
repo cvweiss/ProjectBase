@@ -2,7 +2,7 @@ extends base.jade
 
 block content
   div
-    h1.page-header= $title
+    h1= $title
     p.lead= $content
     if (isset($user_name))
         p= $user_name . ' ' . $user_email

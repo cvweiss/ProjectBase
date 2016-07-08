@@ -50,7 +50,7 @@ class Mongo
         return $this->database;
     }
 
-    public function findDoc(string $collection, array $query = [], array $sort = null, bool $createIfMissing = false):MongoDoc
+    public function findDoc(string $collection, array $query = [], array $sort = null, bool $createIfMissing = false)
     {
         $result = $this->find($collection, $query, $sort, 1);
         return sizeof($result) > 0 ? $result[0] : ($createIfMissing ? new MongoDoc($collection) : null);

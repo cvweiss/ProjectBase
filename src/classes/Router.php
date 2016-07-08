@@ -25,7 +25,7 @@ class Router
         }
 
         Logger::debug("404 $uri");
-        $view->error(404, "$uri could not be found", $params);
+        $view->error(404, "$uri $method could not be found", $params);
     }
 
     protected function routeCall($className, $call, $view, $params)
