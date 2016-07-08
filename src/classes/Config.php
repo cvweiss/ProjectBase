@@ -12,7 +12,7 @@ class Config
         return self::$instance;
     }
 
-    private $settings = [];
+    private $settings = ['debug' => true];
 
     public function get(string $key, $default = null)
     {
@@ -24,11 +24,8 @@ class Config
         return $this->settings;
     }
 
-    public function set(string $key, $value, $overRide = false)
+    public function set(string $key, $value)
     {
-        if ($overRide === false && isset($this->settings[$key])) {
-            throw new \Exception("$key already set, cannot overwrite");
-        }
         $this->settings[$key] = $value;
     }
 
