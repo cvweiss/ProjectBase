@@ -18,7 +18,7 @@ class Mongo
             $config = $config ?? Config::getInstance();
             $server = $config->get("mongo_server", "127.0.0.1");
             $port   = $config->get("mongo_port", 27017);
-            $database = $config->get("mongo_db", "projectsupply");
+            $database = $config->get("mongo_db", "projectbase");
 
             $manager = new Manager("mongodb://$server:$port");
 
