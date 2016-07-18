@@ -4,17 +4,17 @@ namespace cvweiss\projectbase;
 
 class Render
 {
-    private $jade;
+    private $twig;
 
-    public function __construct($jade)
+    public function __construct($twig)
     {
-        $this->jade = $jade;
+        $this->twig = $twig;
     }
 
     public function render($file, $values = [])
     {
         $values = array_merge($values, Config::getInstance()->getAll());
-        echo $this->jade->render($file, $values);
+        echo $this->twig->render($file . '.html', $values);
         $this->finish();
     }
 
@@ -30,7 +30,7 @@ class Render
         $params['errorMessage'] = $errorMessage;
 
         http_response_code($errorCode);
-        echo $this->jade->render("error", $params);
+        echo $this->twig->render("error", $params);
         $this->finish();
     }
 

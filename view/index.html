@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+	<h1>{{ title }}</h1>
+	<p class='lead'>{{ content }}</p>
+	{% if user_name %}
+		<p>{{ user_name }} {{ user_email }}</p>
+	{% endif %}
+</div>
+{% endblock %}
