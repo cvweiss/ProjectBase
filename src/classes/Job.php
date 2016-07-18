@@ -10,7 +10,7 @@ class Job
         $maxChildren = Config::getInstance()->get("maxJobChildren", 20); 
 
         $time = time() + $timeout;
-        $redis = Redis::getRedis();
+        $redis = Redis::get();
         $queueJobs = new JobQueue($redis);
         $children = [];
 
@@ -72,7 +72,7 @@ class Job
 
     public static function addJob(string $className, string $function, array $args = [], int $priority = 0)
     {
-        $redis = Redis::getRedis();
+        $redis = Redis::get();
         $queueJobs = new JobQueue($redis);
         $job = ['class' => $className, 'function' => $function, 'args' => $args];
         $queueJobs->push($job, $priority);

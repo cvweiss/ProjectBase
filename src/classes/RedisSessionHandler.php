@@ -16,7 +16,7 @@ class RedisSessionHandler implements \SessionHandlerInterface
 
     public function read($id)
     {
-        $redis = Redis::getRedis();
+        $redis = Redis::get();
 
         return $redis->get("sess:$id");
     }
@@ -24,7 +24,7 @@ class RedisSessionHandler implements \SessionHandlerInterface
     public function write($id, $data)
     {
         $sessionTimeout = (int) Config::getInstance()->get("session_timeout", 3600);
-        $redis = Redis::getRedis();
+        $redis = Redis::get();
 
         $redis->setex("sess:$id", $sessionTimeout, $data);
 
@@ -33,7 +33,7 @@ class RedisSessionHandler implements \SessionHandlerInterface
 
     public function destroy($id)
     {
-        $redis = Redis::getRedis();
+        $redis = Redis::get();
 
         $redis->del("sess:$id");
 
