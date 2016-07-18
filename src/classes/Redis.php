@@ -7,7 +7,7 @@ class Redis
     private static $pid = 0;
     private static $redis = null;
 
-    public static function getRedis()
+    public static function get()
     {
         if (self::$redis === null || self::$pid !== getmypid()) {
             $config = Config::getInstance();
