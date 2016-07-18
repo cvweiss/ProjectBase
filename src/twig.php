@@ -18,5 +18,3 @@ $twig = new \Twig_Environment($loader, [
 ]);
 
 $view = new Render($twig);
-
-//$twig->render('index.html', array('name' => 'Fabien'));
