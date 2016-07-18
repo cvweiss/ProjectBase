@@ -30,7 +30,7 @@ class Render
         $params['errorMessage'] = $errorMessage;
 
         http_response_code($errorCode);
-        echo $this->twig->render("error", $params);
+        echo $this->twig->render("error.html", $params);
         $this->finish();
     }
 
