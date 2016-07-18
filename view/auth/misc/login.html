@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-4">
+    <h3>Login</h3>
+    <form method="post">
+        <div class="form-group">
+            <label>User ID</label>
+                <input type="textbox" class="form-control" name="userid" placeholder="User ID"></input>
+                <label>Password</label>
+                <input type="textbox" class="form-control" name="password" placeholder="Password"></input>
+        </div>
+        <button type="Submit" class="btn btn-default">Login</button>
+    </form>
+</div>
+{% endblock %}

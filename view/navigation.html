@@ -1,25 +1,25 @@
 <nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a href="/" class="navbar-brand">{{ siteName }}</a>
-		</div>
-		<div class="collapse navbar-collapse navbar-right">
-			<ul class="nav navbar-nav">
-				{% if user_name %}
-					<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{{ user_name }}
-						<span class="caret" />
-						<ul class="dropdown-menu">
-							<li><a href="/logout/">Logout</a></li>
-						</ul>
-					</a></li>
-				{% elseif googleAuth %}
-					<li><a href="/auth/google/login" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a></li>
-				{% else %}
-					<li><a href="/auth/misc/login" role="button" aria-haspopup="true" aria-expanded="false">Login</a></li>
-					<li><a href="/auth/misc/register" role="button" aria-haspopup="true" aria-expanded="false">Register</a></li>
-				{% endif %}
-			</ul>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/" class="navbar-brand">{{ siteName }}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                {% if user_name %}
+                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ user_name }}
+                        <span class="caret" />
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout/">Logout</a></li>
+                            </ul>
+                    </a></li>
+                    {% elseif googleAuth %}
+                    <li><a href="/auth/google/login" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a></li>
+                    {% else %}
+                    <li><a href="/auth/misc/login" role="button" aria-haspopup="true" aria-expanded="false">Login</a></li>
+                    <li><a href="/auth/misc/register" role="button" aria-haspopup="true" aria-expanded="false">Register</a></li>
+                    {% endif %}
+            </ul>
+        </div>
+    </div>
 </nav>
