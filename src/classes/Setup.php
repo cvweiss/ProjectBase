@@ -11,7 +11,7 @@ class Setup
         $projectDir = basename($vendorDir) == 'vendor' ? dirname($vendorDir) : dirname(dirname(__DIR__));
 
         // Create necessary directories
-        $dirs = ['/view/', '/cache/', '/cache/jade'];
+        $dirs = ['/view/', '/cache/', '/cache/twig'];
         foreach ($dirs as $dir) self::makeDir($projectDir . $dir);
 
         // Copy the public directory
@@ -23,7 +23,7 @@ class Setup
     private static function makeDir($dir)
     {
         if (is_dir($dir)) return;
-        echo "Creating directory: $dir<br/>\n";
+        echo "Creating directory: $dir\n";
         mkdir($dir);
     }
 }
