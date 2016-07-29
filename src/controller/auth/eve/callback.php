@@ -10,6 +10,7 @@ class callback
 {
     public function doGet($view, $params)
     { 
+        unset($params);
         $auth = Config::getInstance()->get("oauth2");
         $eve = $auth['eve'];
 
