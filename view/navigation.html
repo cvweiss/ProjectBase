@@ -7,14 +7,14 @@
             <ul class="nav navbar-nav">
                 {% if user_name %}
                 <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user_name }}
+                        {{ user_name }}{% if user_image %} <img src='{{user_image}}' height=20 width=20/>{% endif %}
                         <span class="caret" />
                             <ul class="dropdown-menu">
                                 <li><a href="/logout/">Logout</a></li>
                             </ul>
                     </a></li>
-                    {% elseif googleAuth %}
-                    <li><a href="/auth/google/login" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a></li>
+                    {% elseif authMethod != 'none' %}
+                    <li><a href="/auth/{{ authMethod }}/login" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a></li>
                     {% else %}
                     <li><a href="/auth/misc/login" role="button" aria-haspopup="true" aria-expanded="false">Login</a></li>
                     <li><a href="/auth/misc/register" role="button" aria-haspopup="true" aria-expanded="false">Register</a></li>
