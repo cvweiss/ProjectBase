@@ -13,7 +13,8 @@
         "monolog/monolog": "^1.19",
         "mtdowling/cron-expression": "^1.1",
         "aura/session": "^2.0",
-        "twig/twig": "^1.24"
+        "twig/twig": "^1.24",
+        "zkillboard/crestsso": "^0.0.1"
     },
     "autoload": {
         "files": ["src/init.php"],
